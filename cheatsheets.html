@@ -1,0 +1,1801 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<link rel="icon" type="image/x-icon" href="favicon.ico" />
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>DATA SCIENCE STARSHIP — Cheat Sheets</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;600;700;900&family=Space+Mono:ital,wght@0,400;0,700;1,400&display=swap" rel="stylesheet">
+<link href="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/themes/prism-tomorrow.min.css" rel="stylesheet">
+<style>
+:root {
+  --bg: #04000f;
+  --cyan: #00f0ff;
+  --magenta: #ff00cc;
+  --green: #00ff9d;
+  --orange: #ff6b4a;
+  --purple: #7b2fff;
+  --gold: #ffcc44;
+  --text: #b8ccff;
+  --glass: rgba(255,255,255,0.025);
+  --glass-b: rgba(0,240,255,0.12);
+  --accent: #00f0ff;
+}
+*{margin:0;padding:0;box-sizing:border-box;}
+html{scroll-behavior:smooth;}
+body{font-family:'Space Mono',monospace;color:var(--text);background:var(--bg);overflow-x:hidden;}
+
+/* ── SCROLLBAR ─────────────────────────────────── */
+::-webkit-scrollbar{width:4px;height:4px;}
+::-webkit-scrollbar-track{background:rgba(255,255,255,.02);}
+::-webkit-scrollbar-thumb{background:rgba(0,240,255,.22);border-radius:2px;}
+
+/* ── SPACE CANVAS ──────────────────────────────── */
+#space-canvas{
+  position:fixed;inset:0;z-index:0;
+  pointer-events:none;
+}
+
+/* ── COSMIC BG OVERLAY ────────────────────────── */
+#cosmos-overlay{
+  position:fixed;inset:0;z-index:1;
+  background:
+    radial-gradient(ellipse 70% 50% at 15% 85%, rgba(123,47,255,.14) 0%, transparent 60%),
+    radial-gradient(ellipse 50% 40% at 85% 15%, rgba(0,240,255,.06) 0%, transparent 55%),
+    radial-gradient(ellipse 40% 30% at 50% 50%, rgba(255,0,204,.03) 0%, transparent 60%);
+  pointer-events:none;
+  animation:cosmicPulse 14s ease-in-out infinite alternate;
+}
+@keyframes cosmicPulse{0%{opacity:.7;}100%{opacity:1;}}
+
+/* ── SCANLINES ─────────────────────────────────── */
+.scanlines{
+  position:absolute;inset:0;z-index:1000;
+  pointer-events:none;
+  background:repeating-linear-gradient(
+    to bottom,
+    rgba(0,0,0,0) 0px,rgba(0,0,0,0) 3px,
+    rgba(0,0,0,.06) 3px,rgba(0,0,0,.06) 4px
+  );
+  border-radius:inherit;
+  opacity:.5;
+}
+
+/* ── HEADER ────────────────────────────────────── */
+#site-header{
+  position:fixed;top:0;left:0;right:0;height:56px;z-index:200;
+  background:rgba(4,0,15,.85);
+  backdrop-filter:blur(16px);-webkit-backdrop-filter:blur(16px);
+  border-bottom:1px solid rgba(0,240,255,.08);
+  display:flex;align-items:center;padding:0 22px;
+  justify-content:space-between;
+}
+.hdr-left{display:flex;align-items:center;gap:11px;}
+.hdr-logo{
+  width:32px;height:32px;border-radius:8px;flex-shrink:0;
+  background:linear-gradient(135deg,rgba(0,240,255,.22) 0%,rgba(123,47,255,.38) 100%);
+  border:1px solid rgba(0,240,255,.28);
+  display:flex;align-items:center;justify-content:center;
+}
+.hdr-logo svg{width:16px;height:16px;fill:none;stroke:var(--cyan);stroke-width:1.8;}
+.hdr-brand{
+  font-family:'Orbitron',sans-serif;font-size:12px;font-weight:700;letter-spacing:.2em;
+  background:linear-gradient(90deg,var(--cyan) 0%,var(--purple) 100%);
+  -webkit-background-clip:text;-webkit-text-fill-color:transparent;
+  white-space:nowrap;
+}
+@media(max-width:560px){.hdr-brand{display:none;}}
+.hdr-right{display:flex;align-items:center;gap:8px;}
+.hdr-pill{
+  font-family:'Orbitron',sans-serif;font-size:9px;letter-spacing:.22em;
+  padding:5px 14px;border-radius:20px;
+  background:rgba(0,240,255,.07);border:1px solid rgba(0,240,255,.2);
+  color:var(--cyan);cursor:default;
+  animation:pillPulse 2s ease-in-out infinite;
+}
+@keyframes pillPulse{0%,100%{box-shadow:0 0 8px rgba(0,240,255,.1);}50%{box-shadow:0 0 18px rgba(0,240,255,.3);}}
+.hdr-back-link{
+  font-family:'Orbitron',sans-serif;font-size:9px;letter-spacing:.18em;
+  color:rgba(184,204,255,.45);text-decoration:none;
+  padding:5px 12px;border-radius:7px;
+  border:1px solid rgba(255,255,255,.07);
+  transition:all .2s;
+}
+.hdr-back-link:hover{color:var(--cyan);border-color:rgba(0,240,255,.3);background:rgba(0,240,255,.07);}
+
+/* ── MAIN WRAPPER ─────────────────────────────── */
+#starship{
+  position:relative;z-index:10;
+  min-height:100vh;
+  padding:56px 0 0;
+  display:flex;
+  flex-direction:column;
+}
+
+/* ── HERO ──────────────────────────────────────── */
+#ship-hero{
+  text-align:center;
+  padding:40px 24px 30px;
+  position:relative;
+}
+.hero-eyebrow{
+  font-family:'Orbitron',sans-serif;font-size:9px;letter-spacing:.55em;
+  color:var(--cyan);opacity:.5;margin-bottom:12px;
+  animation:fadeUp .7s ease both;
+}
+.hero-title{
+  font-family:'Orbitron',sans-serif;
+  font-size:clamp(24px,5vw,54px);
+  font-weight:900;line-height:1;letter-spacing:.06em;
+  background:linear-gradient(135deg,var(--cyan) 0%,var(--purple) 45%,var(--magenta) 100%);
+  -webkit-background-clip:text;-webkit-text-fill-color:transparent;
+  filter:drop-shadow(0 0 30px rgba(0,240,255,.3));
+  animation:fadeUp .7s .08s ease both;
+}
+.hero-sub{
+  margin-top:10px;font-size:11px;letter-spacing:.35em;
+  color:var(--text);opacity:.4;font-family:'Orbitron',sans-serif;
+  animation:fadeUp .7s .16s ease both;
+}
+.hero-topic-badge{
+  display:inline-flex;align-items:center;gap:8px;
+  margin-top:18px;padding:6px 20px 6px 12px;
+  border-radius:24px;
+  border:1px solid var(--accent);
+  background:rgba(0,240,255,.07);
+  font-family:'Orbitron',sans-serif;font-size:11px;letter-spacing:.2em;
+  color:var(--accent);
+  animation:fadeUp .7s .24s ease both;
+  transition:all .3s;
+}
+.hero-topic-badge .badge-icon{font-size:18px;}
+
+/* ── PLANET NAV ────────────────────────────────── */
+#planet-nav{
+  display:flex;
+  justify-content:center;
+  gap:10px;
+  padding:0 16px 28px;
+  flex-wrap:wrap;
+  animation:fadeUp .7s .32s ease both;
+}
+.planet-btn{
+  display:flex;align-items:center;gap:7px;
+  padding:9px 16px;
+  border-radius:30px;
+  border:1px solid rgba(255,255,255,.08);
+  background:rgba(255,255,255,.03);
+  cursor:pointer;transition:all .25s cubic-bezier(.16,1,.3,1);
+  font-family:'Orbitron',sans-serif;font-size:9px;letter-spacing:.2em;
+  color:rgba(184,204,255,.45);
+  position:relative;overflow:hidden;
+}
+.planet-btn::before{
+  content:'';position:absolute;inset:0;
+  background:radial-gradient(circle at 50% 50%,var(--p-color,#00f0ff) 0%,transparent 70%);
+  opacity:0;transition:opacity .25s;
+}
+.planet-btn:hover::before{opacity:.08;}
+.planet-btn:hover{
+  border-color:var(--p-color,var(--cyan));
+  color:var(--p-color,var(--cyan));
+  transform:translateY(-3px);
+  box-shadow:0 8px 24px rgba(0,0,0,.4),0 0 16px -4px var(--p-color,var(--cyan));
+}
+.planet-btn.active{
+  border-color:var(--p-color,var(--cyan));
+  background:rgba(255,255,255,.06);
+  color:var(--p-color,var(--cyan));
+  box-shadow:0 0 20px -6px var(--p-color,var(--cyan));
+}
+.planet-btn.active::before{opacity:.1;}
+.planet-icon{font-size:16px;line-height:1;}
+.planet-ring{
+  width:6px;height:6px;border-radius:50%;
+  background:var(--p-color,var(--cyan));
+  opacity:.6;
+  display:none;
+  box-shadow:0 0 6px var(--p-color,var(--cyan));
+}
+.planet-btn.active .planet-ring{display:block;animation:ringPulse 1.2s ease-in-out infinite;}
+@keyframes ringPulse{0%,100%{transform:scale(1);opacity:.6;}50%{transform:scale(1.5);opacity:.2;}}
+
+/* ── MAIN GRID ─────────────────────────────────── */
+#ship-main{
+  display:grid;
+  grid-template-columns:280px 1fr;
+  gap:14px;
+  max-width:1340px;margin:0 auto;
+  padding:0 16px;
+  width:100%;
+  flex-shrink:0;
+}
+@media(max-width:900px){
+  #ship-main{grid-template-columns:1fr;}
+}
+
+/* ── PANEL BASE ────────────────────────────────── */
+.ship-panel{
+  background:rgba(4,0,15,.82);
+  border:1px solid rgba(0,240,255,.1);
+  border-radius:14px;
+  backdrop-filter:blur(14px);-webkit-backdrop-filter:blur(14px);
+  position:relative;overflow:hidden;
+  transition:border-color .3s,box-shadow .3s;
+}
+.ship-panel:hover{
+  border-color:rgba(0,240,255,.2);
+  box-shadow:0 0 30px rgba(0,240,255,.05);
+}
+.ship-panel .panel-header{
+  padding:14px 18px 12px;
+  border-bottom:1px solid rgba(0,240,255,.07);
+  font-family:'Orbitron',sans-serif;font-size:9px;letter-spacing:.4em;
+  color:var(--cyan);opacity:.6;
+  display:flex;align-items:center;gap:8px;
+}
+.panel-header .ph-dot{
+  width:5px;height:5px;border-radius:50%;
+  background:var(--cyan);box-shadow:0 0 6px var(--cyan);
+  animation:livePulse 1.5s ease-in-out infinite;
+}
+@keyframes livePulse{0%,100%{opacity:1;}50%{opacity:.25;}}
+
+/* ── COMMAND STATION ───────────────────────────── */
+#command-station{
+  display:flex;flex-direction:column;gap:12px;
+}
+
+/* Search console */
+.search-wrap{
+  padding:14px;
+  border-bottom:1px solid rgba(0,240,255,.06);
+}
+.search-label{
+  font-family:'Orbitron',sans-serif;font-size:8px;letter-spacing:.35em;
+  color:rgba(0,240,255,.5);margin-bottom:8px;
+}
+.search-inner{
+  position:relative;
+}
+.search-icon{
+  position:absolute;left:11px;top:50%;transform:translateY(-50%);
+  font-size:14px;color:rgba(0,240,255,.35);pointer-events:none;
+}
+#cheat-search{
+  width:100%;padding:9px 10px 9px 34px;
+  background:rgba(255,255,255,.04);
+  border:1px solid rgba(0,240,255,.12);
+  border-radius:8px;
+  color:var(--text);
+  font-family:'Space Mono',monospace;font-size:11px;
+  outline:none;transition:border-color .2s,box-shadow .2s;
+}
+#cheat-search:focus{border-color:rgba(0,240,255,.4);box-shadow:0 0 0 3px rgba(0,240,255,.05);}
+#cheat-search::placeholder{color:rgba(184,204,255,.2);}
+
+/* Level tabs */
+.level-tabs{
+  display:flex;
+  border:1px solid rgba(0,240,255,.1);
+  border-radius:8px;overflow:hidden;
+  margin:0 14px;
+}
+.ltab{
+  flex:1;padding:8px 4px;
+  background:transparent;border:none;
+  font-family:'Orbitron',sans-serif;font-size:8px;letter-spacing:.18em;
+  color:rgba(184,204,255,.35);cursor:pointer;
+  transition:all .2s;
+}
+.ltab.active{
+  background:rgba(0,240,255,.1);
+  color:var(--cyan);
+}
+.ltab:hover:not(.active){color:rgba(184,204,255,.7);}
+.ltab-divider{width:1px;background:rgba(0,240,255,.1);}
+
+/* Section stats */
+.cmd-stats{
+  padding:0 14px 14px;
+  display:grid;grid-template-columns:1fr 1fr;gap:8px;
+}
+.cstat{
+  padding:10px 12px;
+  background:rgba(255,255,255,.03);
+  border:1px solid rgba(255,255,255,.05);
+  border-radius:9px;
+  text-align:center;
+}
+.cstat-val{
+  font-family:'Orbitron',sans-serif;font-size:16px;font-weight:700;
+  color:var(--accent);
+  line-height:1;margin-bottom:3px;
+}
+.cstat-label{
+  font-family:'Orbitron',sans-serif;font-size:7px;letter-spacing:.25em;
+  color:rgba(184,204,255,.3);
+}
+
+/* Section list */
+.cmd-sections{
+  padding:0 14px 14px;
+  display:flex;flex-direction:column;gap:4px;
+  max-height:200px;overflow-y:auto;
+}
+.sec-jump{
+  padding:7px 10px;border-radius:6px;
+  border:1px solid rgba(255,255,255,.05);
+  background:transparent;
+  font-family:'Orbitron',sans-serif;font-size:8px;letter-spacing:.15em;
+  color:rgba(184,204,255,.4);cursor:pointer;
+  text-align:left;transition:all .2s;
+  display:flex;align-items:center;gap:6px;
+}
+.sec-jump::before{content:'▸';color:var(--accent);opacity:.5;font-size:9px;}
+.sec-jump:hover{
+  color:var(--accent);border-color:rgba(0,240,255,.2);
+  background:rgba(0,240,255,.05);
+}
+.sec-jump.active-sec{
+  color:var(--accent);border-color:rgba(0,240,255,.25);
+  background:rgba(0,240,255,.07);
+}
+.sec-jump.active-sec::before{opacity:1;}
+
+/* ── DATA VISUALIZER ───────────────────────────── */
+#data-visualizer{
+  min-height:240px;
+  display:flex;flex-direction:column;
+}
+.dv-body{
+  flex:1;padding:18px;
+  display:flex;flex-direction:column;
+  gap:10px;
+}
+.dv-code-preview{
+  background:rgba(0,0,0,.5);
+  border:1px solid rgba(0,240,255,.08);
+  border-radius:9px;padding:14px;
+  font-family:'Space Mono',monospace;font-size:11px;
+  line-height:1.7;color:rgba(184,204,255,.7);
+  position:relative;overflow:hidden;
+  flex:1;
+  min-height:120px;
+}
+.dv-code-preview::after{
+  content:'';position:absolute;inset:0;
+  background:repeating-linear-gradient(
+    to bottom,
+    rgba(0,0,0,0) 0px,rgba(0,0,0,0) 3px,
+    rgba(0,0,0,.04) 3px,rgba(0,0,0,.04) 4px
+  );pointer-events:none;
+}
+.dv-code-line{
+  display:flex;gap:10px;align-items:flex-start;
+}
+.dv-line-no{
+  color:rgba(0,240,255,.2);font-size:10px;
+  min-width:20px;flex-shrink:0;margin-top:1px;
+  user-select:none;
+}
+.dv-line-code{color:rgba(184,204,255,.75);font-size:11px;}
+.dv-kw{color:#ff79c6;}
+.dv-fn{color:#50fa7b;}
+.dv-str{color:#f1fa8c;}
+.dv-cm{color:#6272a4;font-style:italic;}
+.dv-num{color:#bd93f9;}
+
+.dv-output{
+  background:rgba(0,255,157,.04);
+  border:1px solid rgba(0,255,157,.1);
+  border-radius:8px;padding:10px 12px;
+  font-size:11px;color:rgba(0,255,157,.7);
+  font-family:'Space Mono',monospace;
+}
+.dv-output-label{
+  font-family:'Orbitron',sans-serif;font-size:8px;letter-spacing:.3em;
+  color:rgba(0,255,157,.4);margin-bottom:6px;
+}
+
+/* ── KNOWLEDGE PANEL ───────────────────────────── */
+#knowledge-panel{
+  max-width:1340px;margin:14px auto 0;
+  padding:0 16px;width:100%;
+}
+.kp-inner{
+  background:rgba(4,0,15,.82);
+  border:1px solid rgba(0,240,255,.1);
+  border-radius:14px;
+  backdrop-filter:blur(14px);-webkit-backdrop-filter:blur(14px);
+  padding:24px;
+  position:relative;overflow:hidden;
+}
+.kp-header{
+  display:flex;align-items:center;justify-content:space-between;
+  margin-bottom:22px;padding-bottom:14px;
+  border-bottom:1px solid rgba(0,240,255,.07);
+}
+.kp-title{
+  font-family:'Orbitron',sans-serif;font-size:11px;letter-spacing:.35em;
+  color:var(--accent);
+}
+.kp-meta{
+  font-family:'Orbitron',sans-serif;font-size:8px;letter-spacing:.2em;
+  color:rgba(184,204,255,.25);
+}
+
+/* Section group */
+.cs-section{
+  margin-bottom:28px;
+  animation:fadeUp .4s ease both;
+}
+.cs-section-title{
+  font-family:'Orbitron',sans-serif;font-size:10px;letter-spacing:.35em;
+  color:var(--accent);margin-bottom:14px;
+  display:flex;align-items:center;gap:12px;
+  opacity:.8;
+}
+.cs-section-title::after{
+  content:'';flex:1;height:1px;
+  background:linear-gradient(90deg,rgba(0,240,255,.2),transparent);
+}
+.cs-section-title .section-count{
+  font-size:8px;letter-spacing:.1em;
+  color:rgba(184,204,255,.3);margin-left:4px;
+}
+
+/* Command grid */
+.cmd-grid{
+  display:grid;
+  grid-template-columns:repeat(auto-fill,minmax(340px,1fr));
+  gap:10px;
+}
+@media(max-width:640px){
+  .cmd-grid{grid-template-columns:1fr;}
+}
+
+/* Command card */
+.cmd-card{
+  background:rgba(255,255,255,.025);
+  border:1px solid rgba(255,255,255,.06);
+  border-radius:10px;
+  overflow:hidden;
+  transition:border-color .2s,box-shadow .2s,transform .2s;
+  position:relative;
+}
+.cmd-card::before{
+  content:'';position:absolute;top:0;left:0;right:0;height:1px;
+  background:linear-gradient(90deg,transparent,var(--accent),transparent);
+  opacity:0;transition:opacity .2s;
+}
+.cmd-card:hover{
+  border-color:rgba(0,240,255,.22);
+  box-shadow:0 4px 20px rgba(0,0,0,.4),0 0 16px -6px var(--accent);
+  transform:translateY(-2px);
+}
+.cmd-card:hover::before{opacity:.6;}
+
+/* Radar sweep hover */
+.cmd-card::after{
+  content:'';
+  position:absolute;inset:0;
+  background:conic-gradient(
+    from 0deg at 0% 50%,
+    rgba(0,240,255,.06) 0deg,
+    transparent 60deg
+  );
+  opacity:0;transition:opacity .3s;
+  pointer-events:none;
+}
+.cmd-card:hover::after{opacity:1;animation:radarSweep 1.2s linear infinite;}
+@keyframes radarSweep{
+  0%{background:conic-gradient(from 0deg at 50% 50%,rgba(0,240,255,.06) 0deg,transparent 60deg);}
+  100%{background:conic-gradient(from 360deg at 50% 50%,rgba(0,240,255,.06) 0deg,transparent 60deg);}
+}
+
+.cmd-desc{
+  padding:10px 12px 7px;
+  font-size:10px;color:rgba(184,204,255,.55);
+  line-height:1.5;
+}
+.cmd-code-wrap{
+  position:relative;
+  background:rgba(0,0,0,.4);
+  border-top:1px solid rgba(255,255,255,.04);
+}
+.cmd-code-wrap pre{
+  margin:0;padding:12px 40px 12px 12px !important;
+  background:transparent !important;
+  font-size:11px !important;line-height:1.65 !important;
+  border-radius:0 !important;
+  overflow-x:auto;
+}
+.cmd-copy{
+  position:absolute;top:7px;right:7px;
+  background:rgba(0,240,255,.08);
+  border:1px solid rgba(0,240,255,.2);
+  color:rgba(0,240,255,.7);
+  font-family:'Orbitron',sans-serif;font-size:7.5px;letter-spacing:.15em;
+  padding:4px 8px;border-radius:5px;cursor:pointer;
+  transition:all .2s;
+  white-space:nowrap;
+}
+.cmd-copy:hover{background:rgba(0,240,255,.15);color:var(--cyan);}
+.cmd-copy.copied{
+  background:rgba(0,255,157,.12);border-color:rgba(0,255,157,.35);
+  color:var(--green);
+}
+
+/* No results */
+#no-cmd-results{
+  display:none;text-align:center;padding:48px 24px;
+}
+#no-cmd-results.visible{display:block;}
+.no-cmd-icon{font-size:40px;opacity:.2;margin-bottom:12px;}
+.no-cmd-text{font-family:'Orbitron',sans-serif;font-size:12px;letter-spacing:.25em;color:rgba(184,204,255,.25);}
+
+/* ── FOOTER ────────────────────────────────────── */
+#ship-footer{
+  max-width:1340px;margin:16px auto 0;
+  padding:0 16px 32px;width:100%;
+  display:flex;align-items:center;justify-content:space-between;
+  flex-wrap:wrap;gap:12px;
+}
+.footer-nav{display:flex;gap:10px;flex-wrap:wrap;}
+.f-btn{
+  font-family:'Orbitron',sans-serif;font-size:9px;letter-spacing:.2em;
+  padding:9px 18px;border-radius:8px;
+  border:1px solid rgba(0,240,255,.15);
+  background:rgba(0,240,255,.05);
+  color:rgba(0,240,255,.65);cursor:pointer;
+  text-decoration:none;display:inline-flex;align-items:center;gap:6px;
+  transition:all .2s;
+}
+.f-btn:hover{
+  background:rgba(0,240,255,.12);
+  border-color:rgba(0,240,255,.35);
+  color:var(--cyan);
+  box-shadow:0 0 16px rgba(0,240,255,.15);
+}
+.f-btn.warp{
+  border-color:rgba(123,47,255,.3);
+  background:rgba(123,47,255,.07);
+  color:rgba(123,47,255,.8);
+}
+.f-btn.warp:hover{
+  background:rgba(123,47,255,.15);border-color:rgba(123,47,255,.5);
+  color:var(--purple);box-shadow:0 0 20px rgba(123,47,255,.2);
+}
+.footer-credit{
+  font-family:'Space Mono',monospace;font-size:10px;font-style:italic;
+  color:rgba(184,204,255,.2);
+}
+
+/* ── ANIMATIONS ─────────────────────────────────── */
+@keyframes fadeUp{from{opacity:0;transform:translateY(16px);}to{opacity:1;transform:none;}}
+@keyframes fadeIn{from{opacity:0;}to{opacity:1;}}
+
+/* ── WARP TRANSITION ───────────────────────────── */
+.warp-out{animation:warpOut .5s cubic-bezier(.4,0,1,1) forwards;}
+@keyframes warpOut{
+  0%{opacity:1;transform:scale(1);}
+  100%{opacity:0;transform:scale(1.08);}
+}
+.warp-in{animation:warpIn .5s cubic-bezier(0,0,.2,1) both;}
+@keyframes warpIn{
+  0%{opacity:0;transform:scale(.94);}
+  100%{opacity:1;transform:none;}
+}
+
+/* ── PRISM OVERRIDES ───────────────────────────── */
+code[class*="language-"],
+pre[class*="language-"]{
+  font-family:'Space Mono',monospace !important;
+  font-size:11px !important;
+  background:transparent !important;
+  text-shadow:none !important;
+}
+.token.comment,.token.prolog,.token.doctype,.token.cdata{color:#6272a4 !important;}
+.token.keyword{color:#ff79c6 !important;}
+.token.string,.token.attr-value{color:#f1fa8c !important;}
+.token.function{color:#50fa7b !important;}
+.token.number{color:#bd93f9 !important;}
+.token.operator,.token.punctuation{color:rgba(184,204,255,.6) !important;}
+.token.builtin,.token.class-name{color:#8be9fd !important;}
+.token.property{color:#ffb86c !important;}
+
+/* ── TOPIC COLOR ACCENTS ───────────────────────── */
+body[data-topic="python"]    { --accent: #00f0ff; }
+body[data-topic="sql"]       { --accent: #ffcc44; }
+body[data-topic="pandas"]    { --accent: #7b2fff; }
+body[data-topic="numpy"]     { --accent: #00ff9d; }
+body[data-topic="mlconcepts"]{ --accent: #ff00cc; }
+body[data-topic="mlalgos"]   { --accent: #ff6b4a; }
+body[data-topic="dsconcepts"]{ --accent: #44bbff; }
+
+/* ── TOOL INFO + CONTEXT PANELS ─────────────────── */
+.cmd-tool-info {
+  display:flex;align-items:flex-start;gap:10px;
+  background:rgba(255,255,255,.025);
+  border:1px solid rgba(255,255,255,.07);
+  border-left:2px solid var(--accent);
+  border-radius:8px;padding:10px 13px;
+  margin-bottom:10px;
+}
+.cmd-tool-icon{font-size:20px;flex-shrink:0;line-height:1;margin-top:1px;}
+.cmd-tool-body{flex:1;min-width:0;}
+.cmd-tool-name{
+  font-family:'Orbitron',sans-serif;font-size:9px;font-weight:700;
+  letter-spacing:.22em;color:var(--accent);margin-bottom:3px;
+}
+.cmd-tool-creator{font-size:10px;color:rgba(184,204,255,.4);margin-bottom:5px;font-style:italic;}
+.cmd-tool-tagline{font-size:11px;line-height:1.6;color:rgba(184,204,255,.7);}
+.cmd-context{
+  display:flex;align-items:flex-start;gap:8px;
+  background:rgba(0,255,157,.04);
+  border:1px solid rgba(0,255,157,.1);
+  border-radius:8px;padding:9px 12px;
+  margin-top:10px;
+  font-size:11px;line-height:1.65;
+  color:rgba(0,255,157,.75);
+}
+.cmd-context-icon{flex-shrink:0;font-size:13px;margin-top:1px;}
+.cmd-context b{color:rgba(0,255,157,.95);font-weight:700;}
+
+/* ── RESPONSIVE ────────────────────────────────── */
+@media(max-width:640px){
+  #ship-main{padding:0 10px;}
+  #knowledge-panel,#ship-footer{padding-left:10px;padding-right:10px;}
+  .kp-inner{padding:16px 12px;}
+  .cmd-grid{gap:8px;}
+  #planet-nav{gap:6px;}
+  .planet-btn{padding:7px 10px;font-size:8px;}
+  .hero-title{font-size:clamp(20px,7vw,40px);}
+}
+</style>
+</head>
+<body data-topic="python">
+
+<!-- ═══ SPACE CANVAS ══════════════════════════════════════════ -->
+<canvas id="space-canvas"></canvas>
+<div id="cosmos-overlay"></div>
+
+<!-- ═══ HEADER ══════════════════════════════════════════════════ -->
+<header id="site-header">
+  <div class="hdr-left">
+    <div class="hdr-logo">
+      <svg viewBox="0 0 24 24">
+        <rect x="3" y="3" width="8" height="8" rx="1.5"/>
+        <rect x="13" y="3" width="8" height="8" rx="1.5"/>
+        <rect x="3" y="13" width="8" height="8" rx="1.5"/>
+        <rect x="13" y="13" width="8" height="8" rx="1.5"/>
+        <circle cx="12" cy="12" r="2" fill="var(--cyan)" stroke="none"/>
+        <line x1="7" y1="11" x2="10" y2="12" stroke="var(--cyan)" stroke-width="1"/>
+        <line x1="17" y1="11" x2="14" y2="12" stroke="var(--cyan)" stroke-width="1"/>
+      </svg>
+    </div>
+    <div class="hdr-brand">THE 4TH DIMENSION</div>
+  </div>
+  <div class="hdr-right">
+    <div class="hdr-pill">★ DATA SCIENCE STARSHIP</div>
+    <a href="index.html" class="hdr-back-link">← GALAXY</a>
+  </div>
+</header>
+
+<!-- ═══ MAIN STARSHIP ══════════════════════════════════════════ -->
+<div id="starship">
+
+  <!-- Hero -->
+  <div id="ship-hero">
+    <div class="hero-eyebrow">DATA SCIENCE STARSHIP — KNOWLEDGE BASE</div>
+    <div class="hero-title">CHEAT SHEETS</div>
+    <div class="hero-sub">SELECT YOUR DESTINATION PLANET</div>
+    <div class="hero-topic-badge" id="topic-badge">
+      <span class="badge-icon" id="badge-icon">🐍</span>
+      <span id="badge-text" style="font-family:'Orbitron',sans-serif;font-size:11px;letter-spacing:.2em;">PYTHON · DATA SCIENCE</span>
+    </div>
+  </div>
+
+  <!-- Planet Navigation -->
+  <nav id="planet-nav">
+    <button class="planet-btn active" data-topic="python"    style="--p-color:#00f0ff"><span class="planet-icon">🐍</span><span>PYTHON</span><span class="planet-ring"></span></button>
+    <button class="planet-btn"        data-topic="sql"       style="--p-color:#ffcc44"><span class="planet-icon">🗄️</span><span>SQL</span><span class="planet-ring"></span></button>
+    <button class="planet-btn"        data-topic="pandas"    style="--p-color:#7b2fff"><span class="planet-icon">🐼</span><span>PANDAS</span><span class="planet-ring"></span></button>
+    <button class="planet-btn"        data-topic="numpy"     style="--p-color:#00ff9d"><span class="planet-icon">🔢</span><span>NUMPY</span><span class="planet-ring"></span></button>
+    <button class="planet-btn"        data-topic="mlconcepts"style="--p-color:#ff00cc"><span class="planet-icon">🧠</span><span>ML CONCEPTS</span><span class="planet-ring"></span></button>
+    <button class="planet-btn"        data-topic="mlalgos"   style="--p-color:#ff6b4a"><span class="planet-icon">⚡</span><span>ML ALGORITHMS</span><span class="planet-ring"></span></button>
+    <button class="planet-btn"        data-topic="dsconcepts"style="--p-color:#44bbff"><span class="planet-icon">🔭</span><span>DS CONCEPTS</span><span class="planet-ring"></span></button>
+  </nav>
+
+  <!-- Main 2-col grid -->
+  <div id="ship-main">
+
+    <!-- Command Station -->
+    <div class="ship-panel" id="command-station">
+      <div class="scanlines"></div>
+      <div class="panel-header"><span class="ph-dot"></span>COMMAND STATION</div>
+
+      <!-- Search -->
+      <div class="search-wrap">
+        <div class="search-label">⌕ SEARCH CONSOLE</div>
+        <div class="search-inner">
+          <span class="search-icon">⌕</span>
+          <input id="cheat-search" type="text" placeholder="Search commands…" autocomplete="off">
+        </div>
+      </div>
+
+      <!-- Level tabs -->
+      <div class="level-tabs" style="margin-top:12px;">
+        <button class="ltab active" data-level="basic">⬡ BASIC</button>
+        <div class="ltab-divider"></div>
+        <button class="ltab" data-level="advanced">◆ ADVANCED</button>
+      </div>
+
+      <!-- Stats -->
+      <div class="cmd-stats" style="margin-top:12px;" id="cmd-stats">
+        <div class="cstat"><div class="cstat-val" id="stat-cmds">0</div><div class="cstat-label">COMMANDS</div></div>
+        <div class="cstat"><div class="cstat-val" id="stat-secs">0</div><div class="cstat-label">SECTIONS</div></div>
+      </div>
+
+      <!-- Section jumps -->
+      <div class="panel-header" style="font-size:8px;margin-top:4px;"><span class="ph-dot"></span>SECTIONS</div>
+      <div class="cmd-sections" id="cmd-sections"></div>
+    </div>
+
+    <!-- Data Visualizer -->
+    <div class="ship-panel" id="data-visualizer">
+      <div class="scanlines"></div>
+      <div class="panel-header"><span class="ph-dot"></span>DATA VISUALIZER — PREVIEW</div>
+      <div class="dv-body">
+        <div class="dv-code-preview" id="dv-preview">
+          <!-- Dynamic content -->
+        </div>
+        <div class="dv-output" id="dv-output">
+          <div class="dv-output-label">▸ OUTPUT</div>
+          <div id="dv-output-text"></div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Knowledge Panel -->
+  <div id="knowledge-panel">
+    <div class="kp-inner">
+      <div class="scanlines"></div>
+      <div class="kp-header">
+        <div class="kp-title" id="kp-title">PYTHON · DATA SCIENCE COMMANDS</div>
+        <div class="kp-meta" id="kp-meta"></div>
+      </div>
+      <div id="cheat-content"></div>
+      <div id="no-cmd-results">
+        <div class="no-cmd-icon">🛸</div>
+        <div class="no-cmd-text">NO COMMANDS FOUND IN DATABASE</div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Footer -->
+  <div id="ship-footer">
+    <div class="footer-nav">
+      <button class="f-btn warp" onclick="warpNext()">⚡ WARP SPEED →</button>
+      <button class="f-btn" onclick="shufflePreview()">↻ RANDOM COMMAND</button>
+      <a href="index.html" class="f-btn">← BACK TO GALAXY</a>
+    </div>
+    <div class="footer-credit">Built by Ahmed Ismail · Data Scientist</div>
+  </div>
+
+</div><!-- /starship -->
+
+<!-- Scripts -->
+<script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/prism.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/components/prism-python.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/components/prism-sql.min.js"></script>
+
+<script>
+'use strict';
+
+// ════════════════════════════════════════════════════════════════
+// CHEAT SHEET DATA
+// ════════════════════════════════════════════════════════════════
+const TOPICS = {
+  python: {
+    title:'PYTHON · DATA SCIENCE', icon:'🐍', color:'#00f0ff',
+    label:'Python Planet', subtitle:'Python Data Science',
+    basic: [
+      { section:'SETUP & IMPORTS', commands:[
+        { desc:'Standard Data Science imports', code:`import numpy as np\nimport pandas as pd\nimport matplotlib.pyplot as plt\nimport seaborn as sns\nfrom sklearn.model_selection import train_test_split\nfrom sklearn.preprocessing import StandardScaler` },
+        { desc:'Create virtual environment', code:`python -m venv venv\nsource venv/bin/activate  # Linux/Mac\nvenv\\Scripts\\activate     # Windows\npip install numpy pandas scikit-learn` },
+        { desc:'Install data science stack', code:`pip install numpy pandas matplotlib seaborn\npip install scikit-learn scipy statsmodels\npip install jupyter notebook ipython` },
+      ]},
+      { section:'CORE PYTHON ESSENTIALS', commands:[
+        { desc:'List comprehension patterns', code:`# Basic\nsquares = [x**2 for x in range(10)]\n\n# With condition\nevens = [x for x in range(20) if x % 2 == 0]\n\n# Nested\nmatrix = [[i*j for j in range(4)] for i in range(4)]` },
+        { desc:'Dictionary comprehension', code:`# Count word frequencies\nwords = ['hello', 'world', 'hello', 'python']\nfreqs = {w: words.count(w) for w in set(words)}\n\n# Filter dict\nfiltered = {k: v for k, v in freqs.items() if v > 1}` },
+        { desc:'Lambda, map, filter, zip', code:`# Lambda\ndouble = lambda x: x * 2\n\n# Map\ndoubled = list(map(lambda x: x*2, [1,2,3,4]))\n\n# Filter\nodds = list(filter(lambda x: x%2 != 0, range(10)))\n\n# Zip\npairs = list(zip([1,2,3], ['a','b','c']))` },
+        { desc:'F-strings (Python 3.6+)', code:`name = 'Ahmed'\nvalue = 3.14159\ncount = 42\n\n# Basic\nprint(f'Hello, {name}!')\n\n# Format numbers\nprint(f'Pi = {value:.2f}')\nprint(f'Count: {count:,}')  # 42\nprint(f'Hex: {count:#x}')    # 0x2a` },
+      ]},
+      { section:'FILE I/O & DATA LOADING', commands:[
+        { desc:'Read/write text files', code:`# Read\nwith open('file.txt', 'r') as f:\n    content = f.read()\n    lines = f.readlines()\n\n# Write\nwith open('output.txt', 'w') as f:\n    f.write('Hello World\\n')\n    f.writelines(['line1\\n', 'line2\\n'])` },
+        { desc:'JSON operations', code:`import json\n\n# Load from file\nwith open('data.json') as f:\n    data = json.load(f)\n\n# Dump to file\nwith open('out.json', 'w') as f:\n    json.dump(data, f, indent=2)\n\n# String ↔ object\nobj = json.loads('{"key": "value"}')\nstring = json.dumps(obj)` },
+        { desc:'os & pathlib for file paths', code:`from pathlib import Path\nimport os\n\np = Path('data/raw/file.csv')\nprint(p.stem)       # 'file'\nprint(p.suffix)     # '.csv'\nprint(p.parent)     # data/raw\n\n# List all CSV files\ncsvs = list(Path('data/').glob('**/*.csv'))\n\n# Ensure directory exists\nPath('outputs/').mkdir(parents=True, exist_ok=True)` },
+      ]},
+      { section:'FUNCTIONS & CLASSES', commands:[
+        { desc:'Function with type hints & defaults', code:`from typing import List, Optional\n\ndef clean_data(\n    df: pd.DataFrame,\n    columns: List[str],\n    dropna: bool = True,\n    threshold: float = 0.5\n) -> pd.DataFrame:\n    \"\"\"Clean DataFrame columns.\"\"\"\n    if dropna:\n        df = df.dropna(subset=columns)\n    return df` },
+        { desc:'*args and **kwargs', code:`def flexible_func(*args, **kwargs):\n    print(f'Positional: {args}')\n    print(f'Keyword: {kwargs}')\n\nflexible_func(1, 2, 3, name='Ahmed', val=42)\n\n# Unpacking\ndef add(a, b, c): return a + b + c\nparams = {'a':1,'b':2,'c':3}\nresult = add(**params)` },
+        { desc:'Dataclass for config', code:`from dataclasses import dataclass, field\nfrom typing import List\n\n@dataclass\nclass ModelConfig:\n    n_estimators: int = 100\n    max_depth: int = 5\n    features: List[str] = field(default_factory=list)\n    learning_rate: float = 0.01\n\ncfg = ModelConfig(n_estimators=200)\nprint(cfg.learning_rate)  # 0.01` },
+      ]},
+      { section:'USEFUL BUILT-INS', commands:[
+        { desc:'enumerate, sorted, any, all', code:`items = ['banana', 'apple', 'cherry']\n\nfor i, item in enumerate(items, start=1):\n    print(f'{i}: {item}')\n\n# Sorted with key\nsorted_items = sorted(items, key=len, reverse=True)\n\n# any / all\nhas_apple = any(x == 'apple' for x in items)\nall_fruits = all(isinstance(x, str) for x in items)` },
+        { desc:'collections module', code:`from collections import Counter, defaultdict, deque\n\n# Counter\nwords = ['a','b','a','c','b','a']\ncounts = Counter(words)  # Counter({'a':3,'b':2,'c':1})\nmost_common = counts.most_common(2)\n\n# defaultdict\ngroups = defaultdict(list)\nfor k,v in [('A',1),('B',2),('A',3)]: groups[k].append(v)\n\n# deque (efficient queue)\nq = deque(maxlen=5)\nq.appendleft(0)` },
+      ]},
+    ],
+    advanced: [
+      { section:'DECORATORS & CONTEXT MANAGERS', commands:[
+        { desc:'Custom decorator', code:`import functools\nimport time\n\ndef timer(func):\n    @functools.wraps(func)\n    def wrapper(*args, **kwargs):\n        start = time.perf_counter()\n        result = func(*args, **kwargs)\n        elapsed = time.perf_counter() - start\n        print(f'{func.__name__} took {elapsed:.4f}s')\n        return result\n    return wrapper\n\n@timer\ndef heavy_computation(n):\n    return sum(range(n))` },
+        { desc:'Custom context manager', code:`from contextlib import contextmanager\nimport logging\n\n@contextmanager\ndef timer_ctx(name):\n    start = time.perf_counter()\n    try:\n        yield\n    finally:\n        elapsed = time.perf_counter() - start\n        print(f'{name}: {elapsed:.4f}s')\n\nwith timer_ctx('data processing'):\n    # do something\n    pass` },
+      ]},
+      { section:'GENERATORS & ITERTOOLS', commands:[
+        { desc:'Generator functions', code:`def data_chunks(data, chunk_size=1000):\n    \"\"\"Yield data in chunks to save memory.\"\"\"\n    for i in range(0, len(data), chunk_size):\n        yield data[i : i + chunk_size]\n\n# Process large CSV\ndef read_large_csv(path):\n    import csv\n    with open(path) as f:\n        reader = csv.DictReader(f)\n        for row in reader:\n            yield row` },
+        { desc:'itertools for data pipelines', code:`import itertools\n\n# Chain iterables\nchain = list(itertools.chain([1,2],[3,4],[5,6]))\n\n# Combinations & permutations\ncombos = list(itertools.combinations([1,2,3], 2))\n\n# Group consecutive items\ndata = [1,1,2,2,3,3]\ngroups = {k: list(v) for k, v in itertools.groupby(data)}\n\n# Product (Cartesian)\ngrid = list(itertools.product([0,1],[0,1]))` },
+      ]},
+      { section:'CONCURRENCY', commands:[
+        { desc:'Multiprocessing for CPU tasks', code:`from multiprocessing import Pool\nimport os\n\ndef process_chunk(chunk):\n    return [x**2 for x in chunk]\n\ndata = list(range(10_000))\nwith Pool(processes=os.cpu_count()) as pool:\n    chunks = [data[i::4] for i in range(4)]\n    results = pool.map(process_chunk, chunks)` },
+        { desc:'ThreadPoolExecutor for I/O tasks', code:`from concurrent.futures import ThreadPoolExecutor, as_completed\nimport requests\n\nurls = ['https://api.example.com/data/1',\n        'https://api.example.com/data/2']\n\nwith ThreadPoolExecutor(max_workers=10) as ex:\n    futures = {ex.submit(requests.get, url): url for url in urls}\n    for future in as_completed(futures):\n        result = future.result()` },
+      ]},
+      { section:'TYPE HINTS & PROTOCOLS', commands:[
+        { desc:'Advanced type annotations', code:`from typing import Union, Tuple, Dict, Any, Callable\nfrom typing import TypeVar, Generic\n\nT = TypeVar('T')\n\nclass Pipeline(Generic[T]):\n    def __init__(self, steps: list[tuple[str, Any]]):\n        self.steps = steps\n    def fit_transform(self, X: T) -> T: ...\n\n# Union types (Python 3.10+)\ndef process(data: int | str | list) -> str:\n    return str(data)` },
+      ]},
+    ]
+  },
+
+  sql: {
+    title:'SQL · DATABASE QUERIES', icon:'🗄️', color:'#ffcc44',
+    label:'SQL Moon', subtitle:'SQL Queries',
+    basic: [
+      { section:'SELECT FUNDAMENTALS', commands:[
+        { desc:'Basic SELECT with filtering', code:`-- Select all\nSELECT * FROM customers;\n\n-- Select specific columns\nSELECT name, email, created_at\nFROM customers\nWHERE country = 'Turkey'\n  AND age > 25\nORDER BY created_at DESC\nLIMIT 100;` },
+        { desc:'Aggregate functions', code:`SELECT\n    department,\n    COUNT(*)          AS total,\n    COUNT(salary)     AS with_salary,\n    SUM(salary)       AS total_pay,\n    AVG(salary)       AS avg_pay,\n    MIN(salary)       AS min_pay,\n    MAX(salary)       AS max_pay\nFROM employees\nGROUP BY department\nHAVING COUNT(*) > 5\nORDER BY avg_pay DESC;` },
+        { desc:'CASE WHEN expressions', code:`SELECT\n    name,\n    salary,\n    CASE\n        WHEN salary < 30000  THEN 'Junior'\n        WHEN salary < 60000  THEN 'Mid-level'\n        WHEN salary < 100000 THEN 'Senior'\n        ELSE 'Executive'\n    END AS level,\n    CASE WHEN is_active = 1 THEN 'Active' ELSE 'Inactive' END AS status\nFROM employees;` },
+      ]},
+      { section:'JOINS', commands:[
+        { desc:'INNER, LEFT, RIGHT JOIN', code:`-- INNER JOIN (matching rows only)\nSELECT o.id, c.name, o.amount\nFROM orders o\nINNER JOIN customers c ON o.customer_id = c.id;\n\n-- LEFT JOIN (all left, matching right)\nSELECT c.name, COUNT(o.id) AS order_count\nFROM customers c\nLEFT JOIN orders o ON c.id = o.customer_id\nGROUP BY c.id, c.name;` },
+        { desc:'Multiple joins & FULL OUTER JOIN', code:`SELECT\n    e.name AS employee,\n    d.name AS department,\n    m.name AS manager\nFROM employees e\nLEFT JOIN departments d ON e.dept_id = d.id\nLEFT JOIN employees  m ON e.manager_id = m.id;\n\n-- Find rows only in one table\nSELECT * FROM table_a\nLEFT JOIN table_b USING(id)\nWHERE table_b.id IS NULL;` },
+        { desc:'Self JOIN', code:`-- Find employees and their managers\nSELECT\n    e.name  AS employee,\n    m.name  AS manager,\n    e.salary - m.salary AS salary_diff\nFROM employees e\nLEFT JOIN employees m ON e.manager_id = m.id\nORDER BY salary_diff DESC;` },
+      ]},
+      { section:'SUBQUERIES & CTEs', commands:[
+        { desc:'Subquery patterns', code:`-- Scalar subquery\nSELECT name, salary,\n    salary - (SELECT AVG(salary) FROM employees) AS diff_from_avg\nFROM employees;\n\n-- IN subquery\nSELECT * FROM orders\nWHERE customer_id IN (\n    SELECT id FROM customers WHERE country = 'Germany'\n);\n\n-- EXISTS (often faster)\nSELECT c.name FROM customers c\nWHERE EXISTS (\n    SELECT 1 FROM orders o WHERE o.customer_id = c.id\n);` },
+        { desc:'CTE (Common Table Expression)', code:`WITH\nmonthly_sales AS (\n    SELECT\n        DATE_TRUNC('month', order_date) AS month,\n        SUM(amount) AS total\n    FROM orders\n    GROUP BY 1\n),\ngrowth AS (\n    SELECT\n        month, total,\n        LAG(total) OVER (ORDER BY month) AS prev_month,\n        ROUND(100.0 * (total - LAG(total) OVER (ORDER BY month))\n              / LAG(total) OVER (ORDER BY month), 2) AS growth_pct\n    FROM monthly_sales\n)\nSELECT * FROM growth ORDER BY month;` },
+      ]},
+      { section:'STRING & DATE FUNCTIONS', commands:[
+        { desc:'String functions', code:`SELECT\n    UPPER(name)           AS upper_name,\n    LOWER(email)          AS lower_email,\n    LENGTH(description)   AS desc_len,\n    TRIM(name)            AS trimmed,\n    SUBSTRING(phone, 1, 3) AS area_code,\n    CONCAT(first_name, ' ', last_name) AS full_name,\n    REPLACE(email, '@old.com', '@new.com') AS new_email,\n    LIKE '%@gmail.com'    -- pattern match\nFROM users;` },
+        { desc:'Date functions', code:`SELECT\n    CURRENT_DATE                          AS today,\n    CURRENT_TIMESTAMP                     AS now,\n    DATE_TRUNC('month', created_at)       AS month,\n    EXTRACT(YEAR FROM created_at)         AS year,\n    EXTRACT(DOW FROM created_at)          AS weekday,\n    created_at + INTERVAL '7 days'        AS one_week_later,\n    DATE_DIFF('day', start_date, end_date) AS days_between\nFROM events;` },
+      ]},
+    ],
+    advanced: [
+      { section:'WINDOW FUNCTIONS', commands:[
+        { desc:'ROW_NUMBER, RANK, DENSE_RANK', code:`SELECT\n    name, department, salary,\n    ROW_NUMBER()  OVER (PARTITION BY department ORDER BY salary DESC) AS row_num,\n    RANK()        OVER (PARTITION BY department ORDER BY salary DESC) AS rank,\n    DENSE_RANK()  OVER (PARTITION BY department ORDER BY salary DESC) AS dense_rank,\n    PERCENT_RANK() OVER (PARTITION BY department ORDER BY salary)     AS percentile\nFROM employees;` },
+        { desc:'LAG, LEAD, running totals', code:`SELECT\n    order_date,\n    amount,\n    LAG(amount, 1)  OVER (ORDER BY order_date) AS prev_day,\n    LEAD(amount, 1) OVER (ORDER BY order_date) AS next_day,\n    SUM(amount)     OVER (ORDER BY order_date ROWS UNBOUNDED PRECEDING) AS running_total,\n    AVG(amount)     OVER (ORDER BY order_date ROWS 6 PRECEDING) AS rolling_7d_avg\nFROM daily_sales;` },
+        { desc:'NTILE and FIRST_VALUE', code:`SELECT\n    customer_id, revenue,\n    NTILE(4) OVER (ORDER BY revenue) AS quartile,\n    NTILE(10) OVER (ORDER BY revenue) AS decile,\n    FIRST_VALUE(revenue) OVER (\n        PARTITION BY region ORDER BY revenue DESC\n    ) AS region_top_revenue\nFROM customer_metrics;` },
+      ]},
+      { section:'PERFORMANCE & OPTIMIZATION', commands:[
+        { desc:'Indexes', code:`-- Create index\nCREATE INDEX idx_orders_customer_date\nON orders (customer_id, order_date DESC);\n\n-- Partial index (for filtered queries)\nCREATE INDEX idx_active_users\nON users (email) WHERE is_active = TRUE;\n\n-- Covering index (includes all needed columns)\nCREATE INDEX idx_covering\nON orders (customer_id) INCLUDE (amount, status);\n\n-- Check index usage\nEXPLAIN ANALYZE SELECT * FROM orders WHERE customer_id = 42;` },
+        { desc:'Query optimization tips', code:`-- Use EXISTS instead of COUNT for existence check\nSELECT name FROM customers c\nWHERE EXISTS (SELECT 1 FROM orders o WHERE o.cust_id = c.id);\n\n-- Avoid SELECT * in production\nSELECT id, name, email FROM customers;  -- specify columns\n\n-- Use LIMIT for exploratory queries\nSELECT * FROM large_table LIMIT 100;\n\n-- Avoid functions on indexed columns in WHERE\n-- Bad:  WHERE YEAR(created_at) = 2024\n-- Good: WHERE created_at BETWEEN '2024-01-01' AND '2024-12-31'` },
+      ]},
+    ]
+  },
+
+  pandas: {
+    title:'PANDAS · DATA MANIPULATION', icon:'🐼', color:'#7b2fff',
+    label:'Pandas Station', subtitle:'Pandas DataFrame',
+    basic: [
+      { section:'CREATION & READING', commands:[
+        { desc:'Create DataFrame from dict/list', code:`import pandas as pd\nimport numpy as np\n\n# From dictionary\ndf = pd.DataFrame({\n    'name': ['Alice', 'Bob', 'Charlie'],\n    'age':  [25, 30, 35],\n    'score':[88.5, 92.0, 78.3]\n})\n\n# From list of dicts\nrecords = [{'a':1,'b':2}, {'a':3,'b':4}]\ndf = pd.DataFrame(records)` },
+        { desc:'Read various file formats', code:`# CSV\ndf = pd.read_csv('data.csv', index_col='id', parse_dates=['date'])\n\n# Excel\ndf = pd.read_excel('data.xlsx', sheet_name='Sheet1')\n\n# JSON\ndf = pd.read_json('data.json', orient='records')\n\n# Parquet (fast columnar)\ndf = pd.read_parquet('data.parquet')\n\n# With options\ndf = pd.read_csv('data.csv',\n    sep=';', encoding='utf-8',\n    dtype={'id': int, 'value': float},\n    na_values=['N/A', '?'])` },
+        { desc:'Save / export data', code:`# CSV\ndf.to_csv('output.csv', index=False)\n\n# Excel\ndf.to_excel('output.xlsx', sheet_name='Data', index=False)\n\n# Parquet (recommended for large data)\ndf.to_parquet('output.parquet', compression='snappy')\n\n# Multiple sheets in Excel\nwith pd.ExcelWriter('report.xlsx') as writer:\n    df1.to_excel(writer, sheet_name='Sales')\n    df2.to_excel(writer, sheet_name='Metrics')` },
+      ]},
+      { section:'INSPECTION & INFO', commands:[
+        { desc:'Basic exploration methods', code:`df.head(10)          # First 10 rows\ndf.tail(5)           # Last 5 rows\ndf.shape             # (rows, cols)\ndf.dtypes            # Column types\ndf.info()            # Summary + nulls\ndf.describe()        # Stats (numeric)\ndf.describe(include='all')  # All columns\ndf.nunique()         # Unique value counts\ndf.value_counts('col')      # Frequency count` },
+        { desc:'Null values handling', code:`# Check nulls\ndf.isnull().sum()    # Per column\ndf.isnull().mean()   # % missing\n\n# Drop\ndf.dropna()                    # any column\ndf.dropna(subset=['col'])      # specific col\ndf.dropna(thresh=3)            # keep if >=3 non-null\n\n# Fill\ndf.fillna(0)                   # fill with constant\ndf.fillna({'age':0,'name':'Unknown'})\ndf['col'].fillna(df['col'].mean())  # fill with mean\ndf.ffill()   # forward fill\ndf.bfill()   # backward fill` },
+      ]},
+      { section:'INDEXING & SELECTION', commands:[
+        { desc:'loc and iloc', code:`# loc — label-based\ndf.loc[0]              # row by index label\ndf.loc[0:4]            # rows 0-4 (inclusive)\ndf.loc[:, 'name']      # all rows, name col\ndf.loc[df.age > 25]    # boolean filtering\ndf.loc[df.age > 25, ['name','score']]\n\n# iloc — position-based (exclusive end)\ndf.iloc[0]             # first row\ndf.iloc[0:5]           # rows 0-4\ndf.iloc[:, 1]          # second column\ndf.iloc[0:3, 1:3]      # slice rows & cols` },
+        { desc:'Filtering & querying', code:`# Boolean filters\ndf[df['age'] > 25]\ndf[(df['age'] > 25) & (df['score'] > 80)]\ndf[df['name'].isin(['Alice','Bob'])]\ndf[~df['name'].isin(['Alice'])]\n\n# query() method (string expression)\ndf.query('age > 25 and score > 80')\ndf.query('name in @name_list')\n\n# String contains\ndf[df['name'].str.contains('li', case=False)]` },
+      ]},
+      { section:'OPERATIONS & TRANSFORMS', commands:[
+        { desc:'Apply functions', code:`# apply row-wise or column-wise\ndf['bmi'] = df.apply(lambda row: row.weight / row.height**2, axis=1)\n\n# map — element-wise on Series\ndf['grade'] = df['score'].map({\n    range(90,101): 'A',\n}).fillna('B')\n\n# applymap (deprecated) → use map\ndf[['a','b']].apply(np.sqrt)   # column-wise\n\n# Vectorized operations (faster)\ndf['scaled'] = (df['score'] - df['score'].mean()) / df['score'].std()` },
+        { desc:'GroupBy operations', code:`# Basic groupby\ndf.groupby('department')['salary'].mean()\n\n# Multiple aggregations\ndf.groupby('dept').agg({\n    'salary': ['mean', 'median', 'std'],\n    'age':    ['min', 'max', 'count']\n})\n\n# Named aggregation (pandas >= 0.25)\ndf.groupby('dept').agg(\n    avg_salary=('salary', 'mean'),\n    n_employees=('id', 'count'),\n    max_age=('age', 'max')\n)` },
+        { desc:'Merge and concat', code:`# Merge (like SQL JOIN)\nresult = pd.merge(df1, df2, on='id', how='left')\nresult = pd.merge(df1, df2, left_on='cust_id', right_on='id')\n\n# Concat (stack vertically or horizontally)\ncombined = pd.concat([df1, df2, df3], ignore_index=True)\nhorizontal = pd.concat([df1, df2], axis=1)\n\n# Join on index\ndf1.join(df2, on='key', how='inner')` },
+      ]},
+    ],
+    advanced: [
+      { section:'RESHAPING & PIVOTING', commands:[
+        { desc:'pivot_table and melt', code:`# pivot_table (like Excel pivot)\npivot = df.pivot_table(\n    values='sales',\n    index='region',\n    columns='month',\n    aggfunc='sum',\n    fill_value=0,\n    margins=True\n)\n\n# melt (wide → long)\ndf_long = df.melt(\n    id_vars=['name'],\n    value_vars=['q1','q2','q3','q4'],\n    var_name='quarter',\n    value_name='revenue'\n)` },
+        { desc:'stack, unstack, explode', code:`# stack (columns → row index)\ndf.stack()          # multi-level index\ndf.unstack()        # reverse\n\n# cross-tab\npd.crosstab(df['gender'], df['grade'], margins=True)\n\n# explode (list values → rows)\ndf['tags'] = df['tags'].str.split(',')\ndf_exp = df.explode('tags')` },
+      ]},
+      { section:'PERFORMANCE & MEMORY', commands:[
+        { desc:'Optimize memory usage', code:`# Check memory\ndf.memory_usage(deep=True).sum() / 1024**2  # MB\n\n# Downcast numeric types\ndf['int_col'] = pd.to_numeric(df['int_col'], downcast='integer')\ndf['float_col'] = pd.to_numeric(df['float_col'], downcast='float')\n\n# Convert object columns to category\nfor col in df.select_dtypes('object').columns:\n    df[col] = df[col].astype('category')\n\n# Process in chunks\nfor chunk in pd.read_csv('large.csv', chunksize=10_000):\n    process(chunk)` },
+      ]},
+    ]
+  },
+
+  numpy: {
+    title:'NUMPY · NUMERICAL COMPUTING', icon:'🔢', color:'#00ff9d',
+    label:'NumPy Nebula', subtitle:'NumPy Arrays',
+    basic: [
+      { section:'ARRAY CREATION', commands:[
+        { desc:'Create arrays various ways', code:`import numpy as np\n\n# From list\na = np.array([1, 2, 3, 4, 5])\nb = np.array([[1,2,3],[4,5,6]])\n\n# Range & linspace\nnp.arange(0, 10, 2)       # [0,2,4,6,8]\nnp.linspace(0, 1, 5)      # 5 evenly spaced points\nnp.logspace(0, 3, 4)      # [1, 10, 100, 1000]\n\n# Zeros, ones, identity\nnp.zeros((3, 4))\nnp.ones((2, 3))\nnp.eye(4)                  # Identity matrix\nnp.full((3,3), 7)          # Fill with constant` },
+        { desc:'Random arrays', code:`rng = np.random.default_rng(seed=42)  # Reproducible\n\nrng.random((3, 3))            # Uniform [0,1)\nrng.normal(0, 1, (4, 4))      # Gaussian\nrng.integers(0, 10, size=8)   # Integer uniform\nrng.choice([1,2,3,4], size=5) # Random sample\n\n# Old API (still common)\nnp.random.seed(42)\nnp.random.randn(3, 3)         # Standard normal\nnp.random.rand(3, 3)          # Uniform [0,1)` },
+      ]},
+      { section:'ARRAY OPERATIONS', commands:[
+        { desc:'Element-wise operations', code:`a = np.array([1,2,3,4])\nb = np.array([5,6,7,8])\n\n# Arithmetic\na + b     # [6,8,10,12]\na * b     # [5,12,21,32]\na ** 2    # [1,4,9,16]\nnp.sqrt(a)\nnp.exp(a)\nnp.log(a)   # natural log\n\n# Comparison returns bool array\na > 2       # [F,F,T,T]\nnp.where(a > 2, a, 0)  # conditional replace` },
+        { desc:'Indexing and slicing', code:`a = np.array([[1,2,3],[4,5,6],[7,8,9]])\n\na[1,2]      # 6\na[0:2, 1:]  # rows 0-1, cols 1+\na[:, 1]     # all rows, col 1\na[1:, ::2]  # every other col\n\n# Boolean indexing\na[a > 5]    # [6,7,8,9]\na[a % 2 == 0]  # even elements\n\n# Fancy indexing\na[[0,2], [1,2]]  # (0,1) and (2,2)` },
+        { desc:'Shape & reshape', code:`a = np.arange(24)\n\na.shape           # (24,)\na.reshape(4, 6)   # 4x6 matrix\na.reshape(2,3,4)  # 3D tensor\na.reshape(-1, 4)  # auto-calc rows\n\na.flatten()       # 1D copy\na.ravel()         # 1D view\n\nnp.expand_dims(a, axis=0)  # Add dimension\na.squeeze()       # Remove size-1 dimensions\na.T               # Transpose` },
+      ]},
+      { section:'LINEAR ALGEBRA', commands:[
+        { desc:'Matrix operations', code:`A = np.array([[1,2],[3,4]])\nB = np.array([[5,6],[7,8]])\n\n# Matrix multiply\nA @ B              # or np.matmul(A, B)\nnp.dot(A, B)\n\n# Element-wise\nA * B\n\n# Inverse & determinant\nnp.linalg.inv(A)\nnp.linalg.det(A)\n\n# Eigenvalues\neigenvalues, eigenvectors = np.linalg.eig(A)\n\n# Solve Ax = b\nb = np.array([1, 2])\nx = np.linalg.solve(A, b)` },
+      ]},
+      { section:'STATISTICAL FUNCTIONS', commands:[
+        { desc:'Descriptive statistics', code:`a = np.array([[1,2,3],[4,5,6],[7,8,9]])\n\nnp.mean(a)         # Overall mean\nnp.mean(a, axis=0) # Column means\nnp.mean(a, axis=1) # Row means\n\nnp.std(a)          # Standard deviation\nnp.var(a)          # Variance\nnp.median(a)       # Median\nnp.percentile(a, [25, 50, 75])  # Quartiles\n\nnp.min(a); np.max(a)\nnp.argmin(a); np.argmax(a)  # Index of min/max\nnp.sum(a); np.cumsum(a)     # Cumulative sum` },
+      ]},
+    ],
+    advanced: [
+      { section:'BROADCASTING', commands:[
+        { desc:'Broadcasting rules', code:`# Scalar broadcast\na = np.ones((3, 3))\na * 5   # All elements × 5\n\n# 1D to 2D\na = np.array([[1,2,3],[4,5,6]])  # (2,3)\nb = np.array([10, 20, 30])        # (3,)\na + b   # b broadcast to (2,3)\n\n# Column vector broadcast\nc = np.array([[100],[200]])  # (2,1)\na + c   # (2,3): each row + [100],[200]\n\n# Normalize each row\ndf = np.random.rand(100, 5)\nnormalized = (df - df.mean(axis=0)) / df.std(axis=0)` },
+      ]},
+      { section:'ADVANCED INDEXING', commands:[
+        { desc:'np.where, np.select, np.clip', code:`a = np.array([-3, -1, 0, 1, 2, 5])\n\n# Conditional element selection\nnp.where(a > 0, a, 0)       # Replace negatives with 0\nnp.where(a > 0, a, -a)      # Absolute value\n\n# Multiple conditions\nnp.select(\n    [a < 0, a == 0, a > 0],\n    ['negative', 'zero', 'positive']\n)\n\n# Clip values\nnp.clip(a, 0, 3)  # Values clamped to [0,3]` },
+      ]},
+    ]
+  },
+
+  mlconcepts: {
+    title:'ML CONCEPTS · FUNDAMENTALS', icon:'🧠', color:'#ff00cc',
+    label:'ML Black Hole', subtitle:'ML Theory',
+    basic: [
+      { section:'DATA SPLITTING', commands:[
+        { desc:'Train / Validation / Test split',
+          toolInfo:{icon:'🔬',library:'sklearn.model_selection',creator:'Scikit-learn · INRIA / open-source community (2007)',tagline:'Partitions your dataset so the model never sees evaluation data during training, giving an honest measure of generalisation. The gold standard split prevents data leakage.'},
+          code:`from sklearn.model_selection import train_test_split
+
+# ── Simple 80/20 split ──────────────────────────────
+X_train, X_test, y_train, y_test = train_test_split(
+    X, y,
+    test_size=0.2,      # 20% held out for final evaluation
+    random_state=42,    # Fix seed for reproducibility
+    stratify=y          # Keep class ratios equal in both splits (crucial for imbalanced data)
+)
+
+# ── Three-way: 60% train / 20% val / 20% test ──────
+X_train, X_tmp, y_train, y_tmp = train_test_split(
+    X, y, test_size=0.4, random_state=42
+)
+X_val, X_test, y_val, y_test = train_test_split(
+    X_tmp, y_tmp, test_size=0.5, random_state=42
+)`,
+          context:'<b>When to use:</b> At the very start of every supervised ML project. Fit preprocessors and scalers on X_train only — never on X_test. The test set must stay locked until final evaluation to give an unbiased performance estimate.'
+        },
+        { desc:'K-Fold cross-validation',
+          toolInfo:{icon:'🔄',library:'sklearn.model_selection — KFold / StratifiedKFold',creator:'Scikit-learn · INRIA / open-source community (2007)',tagline:'Evaluates a model K times, each time using a different fold as the test set. Reports mean ± std — a far more honest estimate than a single train/test split, especially on small datasets.'},
+          code:`from sklearn.model_selection import (
+    cross_val_score, KFold, StratifiedKFold
+)
+
+# ── Standard K-Fold ─────────────────────────────────
+kf = KFold(n_splits=5, shuffle=True, random_state=42)
+scores = cross_val_score(
+    model, X, y,
+    cv=kf,               # Pass fold object
+    scoring='accuracy'   # Any sklearn metric string works here
+)
+# Report mean ± std — healthier than one number
+print(f'CV Accuracy: {scores.mean():.3f} ± {scores.std():.3f}')
+
+# ── StratifiedKFold — for imbalanced classification ─
+# Ensures each fold has the same class proportion as the full dataset
+skf = StratifiedKFold(n_splits=5)
+cross_val_score(model, X, y, cv=skf)`,
+          context:'<b>When to use:</b> When your dataset has fewer than ~5,000 rows, or when you need reliable variance estimates for model comparison. Stratified variant is mandatory for imbalanced class problems.'
+        },
+      ]},
+      { section:'EVALUATION METRICS', commands:[
+        { desc:'Classification metrics — accuracy, precision, recall, F1, AUC',
+          toolInfo:{icon:'📊',library:'sklearn.metrics',creator:'Scikit-learn · INRIA / open-source community (2007)',tagline:'A complete suite of classification performance measures. Each captures a different trade-off: precision penalises false positives; recall penalises false negatives; AUC summarises all decision thresholds at once.'},
+          code:`from sklearn.metrics import (
+    accuracy_score, precision_score, recall_score,
+    f1_score, roc_auc_score, classification_report
+)
+
+# ── Full report in one call ──────────────────────────
+# Prints per-class precision, recall, F1 and support count
+print(classification_report(y_test, y_pred))
+
+# ── Individual scores ────────────────────────────────
+acc = accuracy_score(y_test, y_pred)    # (TP+TN) / total — misleading on imbalanced data!
+prc = precision_score(y_test, y_pred, average='weighted')  # TP / (TP + FP)
+rec = recall_score(y_test, y_pred, average='weighted')     # TP / (TP + FN)
+f1  = f1_score(y_test, y_pred, average='weighted')         # Harmonic mean of P and R
+# average='weighted' weights each class by its support count
+
+# ── AUC — threshold-independent ─────────────────────
+# Requires predict_proba(), not predict()
+auc = roc_auc_score(y_test, y_proba[:, 1])  # 1.0 = perfect, 0.5 = random`,
+          context:'<b>When to use:</b> Always report more than accuracy alone. For imbalanced problems (fraud, disease), prioritise F1 or AUC. Use average="macro" for equal treatment of all classes; "weighted" when class frequency matters.'
+        },
+        { desc:'Regression metrics — RMSE, MAE, R²',
+          toolInfo:{icon:'📏',library:'sklearn.metrics + numpy',creator:'Scikit-learn · INRIA (2007) | NumPy: Travis Oliphant (2006)',tagline:'Quantifies prediction error for continuous targets. RMSE punishes large errors more; MAE is robust to outliers; R² shows how much variance the model explains relative to a naive mean predictor.'},
+          code:`from sklearn.metrics import (
+    mean_squared_error, mean_absolute_error,
+    r2_score, mean_absolute_percentage_error
+)
+import numpy as np
+
+mse  = mean_squared_error(y_test, y_pred)
+rmse = np.sqrt(mse)   # Same units as target — most human-interpretable
+mae  = mean_absolute_error(y_test, y_pred)   # Median-like, robust to outliers
+r2   = r2_score(y_test, y_pred)              # 1.0 = perfect fit, 0 = predict the mean
+mape = mean_absolute_percentage_error(y_test, y_pred)  # Scale-free %, good for reporting
+
+print(f'RMSE: {rmse:.4f}  MAE: {mae:.4f}  R²: {r2:.4f}')`,
+          context:'<b>When to use:</b> RMSE for models where large errors are especially costly (demand forecasting). MAE when outliers should not dominate training signal. MAPE for executive-friendly "% off" reporting — but avoid when targets can be near zero.'
+        },
+      ]},
+      { section:'FEATURE SCALING', commands:[
+        { desc:'StandardScaler, MinMaxScaler, RobustScaler',
+          toolInfo:{icon:'⚖️',library:'sklearn.preprocessing',creator:'Scikit-learn · INRIA / open-source community (2007)',tagline:'Normalises feature magnitudes so gradient-based and distance-based models are not dominated by high-magnitude features. Always fit on training data only — using test statistics leaks information.'},
+          code:`from sklearn.preprocessing import (
+    StandardScaler, MinMaxScaler, RobustScaler
+)
+
+# ── StandardScaler: z = (x - μ) / σ ─────────────────
+# Best for: linear/logistic regression, SVMs, neural networks
+sc = StandardScaler()
+X_train_sc = sc.fit_transform(X_train)  # Compute μ and σ from TRAINING data only
+X_test_sc  = sc.transform(X_test)       # Apply same μ,σ — NEVER refit on test!
+
+# ── MinMaxScaler: x' = (x - min) / (max - min) → [0,1] ──
+# Best for: image pixel data, features with fixed known bounds
+mm = MinMaxScaler(feature_range=(0, 1))
+X_mm = mm.fit_transform(X_train)
+
+# ── RobustScaler: uses median and IQR ───────────────
+# Best for: data containing many outliers (ignores extreme values)
+rb = RobustScaler()`,
+          context:'<b>When to use:</b> Tree-based models (Random Forest, XGBoost, LightGBM) do NOT need scaling. Distance-based models (KNN, SVM) and neural networks always do. Fit the scaler inside a Pipeline to prevent leakage during cross-validation.'
+        },
+      ]},
+      { section:'REGULARIZATION', commands:[
+        { desc:'L1 Lasso, L2 Ridge, ElasticNet',
+          toolInfo:{icon:'🔒',library:'sklearn.linear_model — Lasso, Ridge, ElasticNet',creator:'Scikit-learn · INRIA / open-source community (2007)',tagline:'Penalty terms added to the loss function that discourage complex models, reducing overfitting. Lasso also performs automatic feature selection by driving irrelevant coefficients to exactly zero.'},
+          code:`from sklearn.linear_model import Lasso, Ridge, ElasticNet
+
+# ── L1 Lasso — penalty: α × Σ|wᵢ| ─────────────────
+# Effect: drives many coefficients exactly to 0 → built-in feature selection
+lasso = Lasso(alpha=0.1)    # Higher alpha = stronger regularisation
+lasso.fit(X_train, y_train)
+print(lasso.coef_)          # Zero entries = features discarded by Lasso
+
+# ── L2 Ridge — penalty: α × Σwᵢ² ───────────────────
+# Effect: shrinks all coefficients toward 0, none become exactly zero
+ridge = Ridge(alpha=1.0)
+ridge.fit(X_train, y_train)
+
+# ── ElasticNet — L1 + L2 blend ──────────────────────
+en = ElasticNet(alpha=0.1, l1_ratio=0.5)
+# l1_ratio=1.0 → pure Lasso | l1_ratio=0.0 → pure Ridge`,
+          context:'<b>When to use:</b> Always regularise linear models. Lasso when you suspect only a few features matter (high-dimensional, sparse). Ridge when all features contribute. ElasticNet for correlated feature groups (genomics, NLP). Use CV to select alpha.'
+        },
+      ]},
+    ],
+    advanced: [
+      { section:'BIAS-VARIANCE TRADEOFF', commands:[
+        { desc:'Learning curves — diagnosing overfit vs underfit',
+          toolInfo:{icon:'📈',library:'sklearn.model_selection — learning_curve, validation_curve',creator:'Scikit-learn · INRIA / open-source community (2007)',tagline:'Plots training and validation performance as a function of training set size or hyperparameter value, visually exposing whether a model suffers from high bias (underfitting) or high variance (overfitting).'},
+          code:`from sklearn.model_selection import learning_curve, validation_curve
+import numpy as np
+
+# ── Learning Curve ───────────────────────────────────
+train_sizes, train_scores, val_scores = learning_curve(
+    model, X, y,
+    cv=5,
+    train_sizes=np.linspace(0.1, 1.0, 10),  # 10 points from 10% → 100%
+    scoring='neg_mean_squared_error',
+    n_jobs=-1   # Parallel across all CPU cores
+)
+# ── Reading the curve ────────────────────────────────
+# Both curves plateau at HIGH error  → High BIAS (underfitting) → richer model
+# Train LOW, val HIGH, large gap     → High VARIANCE (overfitting) → more data or regularise
+# Both curves converge LOW           → Good fit!
+
+# ── Validation Curve — vary one hyperparameter ───────
+train_s, val_s = validation_curve(
+    model, X, y,
+    param_name='max_depth',      # Hyperparameter to sweep
+    param_range=[1, 2, 3, 4, 5, 6, 7],
+    cv=5
+)`,
+          context:'<b>When to use:</b> Run learning curves BEFORE hyperparameter tuning. They reveal whether more data or a better model is the right investment. Prevents wasting GPU hours on grid search when the root issue is dataset size.'
+        },
+      ]},
+      { section:'HYPERPARAMETER TUNING', commands:[
+        { desc:'GridSearchCV and RandomizedSearchCV',
+          toolInfo:{icon:'🎛️',library:'sklearn.model_selection — GridSearchCV, RandomizedSearchCV',creator:'Scikit-learn · INRIA / open-source community (2007)',tagline:'Automates hyperparameter optimisation using cross-validation to estimate out-of-sample performance for each configuration, finding the setting that generalises best without touching the test set.'},
+          code:`from sklearn.model_selection import GridSearchCV, RandomizedSearchCV
+from sklearn.ensemble import RandomForestClassifier
+from scipy.stats import randint
+
+# ── Grid Search — exhaustive, best for small spaces ─
+param_grid = {
+    'n_estimators': [50, 100, 200],     # Number of trees
+    'max_depth':    [3, 5, 7, None],    # Tree depth; None = grow until pure
+    'min_samples_split': [2, 5]         # Minimum samples to split a node
+}
+grid = GridSearchCV(
+    RandomForestClassifier(), param_grid,
+    cv=5,            # 5-fold CV evaluated for each combination
+    n_jobs=-1,       # Use all available CPU cores
+    scoring='f1_weighted'
+)
+grid.fit(X_train, y_train)
+print(grid.best_params_, grid.best_score_)
+best_model = grid.best_estimator_   # Re-trained on full X_train
+
+# ── Randomized Search — efficient for large spaces ──
+# Samples n_iter random combinations — often beats exhaustive search at 10% the cost
+param_dist = {'n_estimators': randint(50, 500), 'max_depth': randint(3, 20)}
+rand = RandomizedSearchCV(
+    RandomForestClassifier(), param_dist, n_iter=50, cv=5, n_jobs=-1
+)
+rand.fit(X_train, y_train)`,
+          context:'<b>When to use:</b> After learning curves confirm the right model family. GridSearch for ≤ 3 hyperparameters with narrow ranges. RandomizedSearch for deep networks or large parameter spaces — 60 random trials routinely beats exhaustive search of 1,000 combinations.'
+        },
+      ]},
+    ]
+  },
+
+  dsconcepts: {
+    title:'DS CONCEPTS · WORKFLOWS', icon:'🔭', color:'#44bbff',
+    label:'DS Wormhole', subtitle:'Data Science Concepts',
+    basic: [
+      { section:'EDA WORKFLOW', commands:[
+        { desc:'Standard EDA checklist — load, inspect, visualise',
+          toolInfo:{icon:'🔍',library:'pandas + matplotlib + seaborn',creator:'Pandas: Wes McKinney (2008) · Seaborn: Michael Waskom (2012) · Matplotlib: John Hunter (2003)',tagline:'The essential trio for exploratory data analysis. Pandas manipulates tabular data; Matplotlib renders publication-ready plots; Seaborn adds statistical visualisations (violin, heatmap, pairplot) with minimal boilerplate.'},
+          code:`import pandas as pd
+import matplotlib.pyplot as plt
+import seaborn as sns
+
+# ── 1. Load & get the lay of the land ───────────────
+df = pd.read_csv('data.csv')
+print(df.shape)                       # (rows, columns) — how big is this?
+print(df.dtypes)                      # Are types correct? Dates as 'object'?
+df.describe(include='all')            # Stats: mean, std, min, max, unique counts
+
+# ── 2. Missing values — where and how much ──────────
+df.isnull().mean().sort_values(ascending=False)
+# Rule of thumb: > 50% missing → consider dropping the column
+
+# ── 3. Univariate distributions ─────────────────────
+df.hist(bins=30, figsize=(15, 10))    # Spot skew, bimodality, outliers
+plt.tight_layout()
+
+# ── 4. Correlation heatmap (linear relationships) ───
+sns.heatmap(df.corr(), annot=True, cmap='coolwarm', center=0)
+# Look for |r| > 0.9 → potential multicollinearity
+
+# ── 5. Target distribution ──────────────────────────
+df['target'].value_counts(normalize=True)  # Class imbalance present?`,
+          context:'<b>When to use:</b> Always — before any modelling whatsoever. Skipping EDA is the single most common cause of silent model failures. Allocate at least 30 minutes of EDA per new dataset; document surprising findings for stakeholders.'
+        },
+        { desc:'Outlier detection — IQR and Z-score methods',
+          toolInfo:{icon:'🎯',library:'pandas + scipy.stats + numpy',creator:'SciPy: Travis Oliphant, Pearu Peterson, Eric Jones (2001) · NumPy: Travis Oliphant (2006)',tagline:'SciPy provides 100+ statistical functions and tests. NumPy underpins all numerical computation in Python. Together they identify data points that deviate enough from the distribution to potentially corrupt model training.'},
+          code:`import numpy as np
+from scipy import stats
+
+# ── IQR method (robust, non-parametric) ─────────────
+# Advantage: works on any distribution, not just Gaussian
+Q1 = df['col'].quantile(0.25)
+Q3 = df['col'].quantile(0.75)
+IQR = Q3 - Q1                          # Interquartile range = middle 50% spread
+# Tukey's rule: points outside 1.5×IQR from quartiles are mild outliers
+outliers = df[
+    (df['col'] < Q1 - 1.5*IQR) |
+    (df['col'] > Q3 + 1.5*IQR)
+]
+print(f'{len(outliers)} outliers ({len(outliers)/len(df)*100:.1f}%)')
+
+# ── Z-score method (parametric, assumes normality) ───
+# Points more than 3 standard deviations from the mean
+z_scores = np.abs(stats.zscore(df.select_dtypes('number')))
+outlier_mask = (z_scores > 3).any(axis=1)  # Flag rows with any extreme column
+df_clean = df[~outlier_mask]               # Remove flagged rows`,
+          context:'<b>When to use:</b> Before model training, not after. Decision depends on domain: outliers in fraud detection ARE the signal, not noise! Use IQR for skewed or unknown distributions; Z-score only when normality is confirmed by Shapiro-Wilk.'
+        },
+      ]},
+      { section:'FEATURE ENGINEERING', commands:[
+        { desc:'Encoding categorical variables — OHE, label, target, ordinal',
+          toolInfo:{icon:'🏷️',library:'sklearn.preprocessing + pandas.get_dummies',creator:'Scikit-learn · INRIA (2007) | Pandas: Wes McKinney (2008)',tagline:'Converts non-numeric categories into numeric representations that ML algorithms can process. Choice of encoding dramatically affects model performance — the wrong encoding can inject false ordinal relationships or cause the dummy variable trap.'},
+          code:`from sklearn.preprocessing import LabelEncoder, OrdinalEncoder
+import pandas as pd
+
+# ── One-Hot Encoding (OHE) ───────────────────────────
+# Best for: nominal categories (no natural order), low cardinality (< ~50 unique values)
+# Creates one binary column per category value
+df_enc = pd.get_dummies(df, columns=['city', 'color'], drop_first=True)
+# drop_first=True removes one column per feature to avoid multicollinearity
+
+# ── Label Encoding ───────────────────────────────────
+# Best for: tree-based models (RF, XGBoost) only — implies ordering, wrong for linear models!
+le = LabelEncoder()
+df['grade_enc'] = le.fit_transform(df['grade'])
+
+# ── Target Encoding (mean encoding) ─────────────────
+# Best for: high-cardinality features (city with 500+ unique values)
+# WARNING: compute from training folds only to prevent leakage!
+target_mean = df.groupby('category')['target'].mean()
+df['cat_enc'] = df['category'].map(target_mean)
+
+# ── Ordinal Encoding — explicit order ────────────────
+# Best for: features with a natural ranking (Low < Medium < High)
+oe = OrdinalEncoder(categories=[['Low', 'Medium', 'High']])
+df['level_enc'] = oe.fit_transform(df[['level']])`,
+          context:'<b>When to use:</b> OHE for linear/neural models with low-cardinality nominals. Label encoding only for ordinal features or tree models. Target encoding for high-cardinality features — always use cross-fold means in training to prevent leakage.'
+        },
+        { desc:'Date/Time feature extraction',
+          toolInfo:{icon:'📅',library:'pandas datetime accessor (.dt)',creator:'Pandas: Wes McKinney (2008) — datetime support built on NumPy datetime64',tagline:'Extracts temporal signals from raw timestamps. Raw dates are meaningless to most ML algorithms; engineered features like weekday, hour, and days-since expose the seasonality and recency patterns models need.'},
+          code:`# Step 1: parse raw strings into datetime type
+df['date'] = pd.to_datetime(df['date'])
+
+# ── Cyclical temporal features ───────────────────────
+df['year']       = df['date'].dt.year
+df['month']      = df['date'].dt.month      # 1–12
+df['day']        = df['date'].dt.day
+df['weekday']    = df['date'].dt.weekday    # 0=Monday, 6=Sunday
+df['hour']       = df['date'].dt.hour       # 0–23 (if time of day is present)
+df['quarter']    = df['date'].dt.quarter    # 1–4
+df['is_weekend'] = df['date'].dt.weekday >= 5  # Boolean flag
+
+# ── Derived duration features ────────────────────────
+# Recency — how long ago did this event occur?
+df['days_since'] = (pd.Timestamp.now() - df['date']).dt.days
+
+# ── Rolling statistics — capture time series momentum ─
+df['rolling_7d_avg'] = df['value'].rolling(window=7).mean()
+df['rolling_7d_std'] = df['value'].rolling(window=7).std()
+df['lag_1']          = df['value'].shift(1)   # Previous period value`,
+          context:'<b>When to use:</b> Whenever your data has a temporal dimension — e-commerce, IoT, finance, healthcare. For cyclical features (month, hour), also consider sine/cosine encoding: np.sin(2π·month/12) to preserve circular relationships.'
+        },
+      ]},
+      { section:'CLASS IMBALANCE', commands:[
+        { desc:'SMOTE oversampling and combined resampling strategies',
+          toolInfo:{icon:'⚖️',library:'imbalanced-learn (imblearn)',creator:'Guillaume Lemaître, Fernando Nogueira, Christos Aridas (2017) — built on top of scikit-learn',tagline:'Addresses class imbalance in classification datasets. SMOTE (Synthetic Minority Over-sampling Technique) generates plausible new minority-class examples by interpolating between real ones — more powerful than simple duplication.'},
+          code:`from imblearn.over_sampling import SMOTE, RandomOverSampler
+from imblearn.under_sampling import RandomUnderSampler
+from imblearn.pipeline import Pipeline
+
+# ── SMOTE: generate synthetic minority class examples ─
+# NOT random duplication — creates new points via k-NN interpolation
+smote = SMOTE(
+    sampling_strategy='minority',  # Target only the minority class
+    k_neighbors=5,                 # Use 5 nearest neighbours to synthesise
+    random_state=42
+)
+# CRITICAL: apply only to training data — test set must remain original
+X_res, y_res = smote.fit_resample(X_train, y_train)
+print(f'Before: {dict(zip(*np.unique(y_train, return_counts=True)))}')
+print(f'After:  {dict(zip(*np.unique(y_res,   return_counts=True)))}')
+
+# ── Combined strategy: oversample + undersample ──────
+over  = SMOTE(sampling_strategy=0.5)            # Minority → 50% of majority count
+under = RandomUnderSampler(sampling_strategy=0.8)  # Majority → 80% of total
+pipe  = Pipeline([('over', over), ('under', under)])
+X_res, y_res = pipe.fit_resample(X_train, y_train)`,
+          context:'<b>When to use:</b> When minority class is below 10% AND is the class you care most about (fraud, churn, disease). Also try adjusting the classification threshold (predict_proba > 0.3 instead of 0.5) — often more effective than resampling alone.'
+        },
+      ]},
+      { section:'MODEL DEPLOYMENT', commands:[
+        { desc:'Serialise with joblib, serve via FastAPI',
+          toolInfo:{icon:'🚀',library:'joblib + FastAPI + Pydantic',creator:'Joblib: Gael Varoquaux (2008) · FastAPI: Sebastián Ramírez (2018) · Pydantic: Samuel Colvin (2017)',tagline:'Joblib efficiently serialises Python objects including NumPy arrays (better than pickle for ML). FastAPI is an async Python web framework for ML serving APIs with automatic request validation and OpenAPI docs generated for free via Pydantic.'},
+          code:`import joblib
+from fastapi import FastAPI
+from pydantic import BaseModel
+import numpy as np
+
+# ── Save model ───────────────────────────────────────
+# Preferred over pickle for sklearn — handles NumPy arrays efficiently
+joblib.dump(model, 'model.joblib')
+
+# ── ALWAYS save the full pipeline — not just the model ─
+# Forgetting the scaler is the #1 production deployment bug
+from sklearn.pipeline import Pipeline
+full_pipeline = Pipeline([('scaler', scaler), ('model', rf)])
+joblib.dump(full_pipeline, 'pipeline.joblib')
+
+# ── FastAPI prediction endpoint ──────────────────────
+app = FastAPI()
+pipeline = joblib.load('pipeline.joblib')
+
+class PredictRequest(BaseModel):
+    features: list[float]  # Pydantic validates type + raises HTTP 422 if wrong
+
+@app.post('/predict')
+def predict(req: PredictRequest):
+    X = np.array(req.features).reshape(1, -1)
+    pred  = pipeline.predict(X)[0]           # Run through scaler + model
+    proba = pipeline.predict_proba(X)[0].max()
+    return {'prediction': int(pred), 'confidence': float(proba)}
+# Run: uvicorn app:app --reload --host 0.0.0.0 --port 8000`,
+          context:'<b>When to use:</b> Any time you move beyond a Jupyter notebook. Package the full preprocessing pipeline with the model. Use FastAPI for REST APIs; consider ONNX for cross-language or mobile serving; MLflow for experiment tracking.'
+        },
+      ]},
+    ],
+    advanced: [
+      { section:'STATISTICAL TESTING', commands:[
+        { desc:'Hypothesis tests — t-test, chi-squared, Shapiro-Wilk, Mann-Whitney U',
+          toolInfo:{icon:'📐',library:'scipy.stats',creator:'SciPy: Travis Oliphant, Pearu Peterson, Eric Jones (2001) — wraps battle-tested LAPACK/BLAS Fortran routines',tagline:'SciPy\'s stats module provides 100+ statistical tests and distributions. Hypothesis tests let you make probabilistic claims about group differences — essential for A/B testing, feature selection decisions, and scientific reporting with defensible p-values.'},
+          code:`from scipy import stats
+
+# ── t-test: compare means of two independent groups ─
+# Assumption: roughly normal or n > 30 (Central Limit Theorem)
+t_stat, p_val = stats.ttest_ind(group_a, group_b)
+print(f't={t_stat:.3f}, p={p_val:.4f}')
+# p < 0.05 → statistically significant (reject H₀: means are equal)
+# p ≥ 0.05 → insufficient evidence to reject H₀
+print('Significant!' if p_val < 0.05 else 'Not significant')
+
+# ── Chi-squared: test independence of two categorical variables ─
+# "Is gender independent of product preference?"
+chi2, p, dof, expected = stats.chi2_contingency(contingency_table)
+
+# ── Shapiro-Wilk: normality test ─────────────────────
+# ALWAYS run this before applying parametric tests
+stat, p = stats.shapiro(data)
+# p < 0.05 → NOT normally distributed → use non-parametric alternatives
+
+# ── Mann-Whitney U: non-parametric alternative to t-test ─
+# Use when Shapiro-Wilk rejects normality
+stat, p = stats.mannwhitneyu(group_a, group_b, alternative='two-sided')`,
+          context:'<b>When to use:</b> A/B testing, validating modelling assumptions, and scientific reporting. Always check normality with Shapiro-Wilk first. Apply Bonferroni correction (multiply p by number of tests) when running many simultaneous hypothesis tests.'
+        },
+      ]},
+    ]
+  }
+};
+
+// ════════════════════════════════════════════════════════════════
+// THREE.JS BACKGROUND
+// ════════════════════════════════════════════════════════════════
+(function initSpaceBackground() {
+  const canvas = document.getElementById('space-canvas');
+  const renderer = new THREE.WebGLRenderer({ canvas, antialias:true, alpha:true });
+  renderer.setPixelRatio(Math.min(window.devicePixelRatio, 2));
+  renderer.setClearColor(0x000000, 0);
+
+  const scene = new THREE.Scene();
+  const camera = new THREE.PerspectiveCamera(60, window.innerWidth/window.innerHeight, 0.1, 300);
+  camera.position.z = 15;
+
+  function resize() {
+    renderer.setSize(window.innerWidth, window.innerHeight);
+    camera.aspect = window.innerWidth / window.innerHeight;
+    camera.updateProjectionMatrix();
+  }
+  resize();
+  window.addEventListener('resize', resize);
+
+  // Starfield
+  const starGeo = new THREE.BufferGeometry();
+  const starCount = 3500;
+  const starPos = new Float32Array(starCount * 3);
+  const starCol = new Float32Array(starCount * 3);
+  for (let i = 0; i < starCount; i++) {
+    const r = 50 + Math.random() * 120;
+    const theta = Math.acos(2 * Math.random() - 1);
+    const phi = Math.random() * Math.PI * 2;
+    starPos[i*3]   = r * Math.sin(theta) * Math.cos(phi);
+    starPos[i*3+1] = r * Math.sin(theta) * Math.sin(phi);
+    starPos[i*3+2] = r * Math.cos(theta);
+    const b = 0.2 + Math.random() * 0.8;
+    const tint = Math.random();
+    starCol[i*3]   = b * (tint < 0.3 ? 0.5 : 0.9);
+    starCol[i*3+1] = b * 0.85;
+    starCol[i*3+2] = b;
+  }
+  starGeo.setAttribute('position', new THREE.BufferAttribute(starPos, 3));
+  starGeo.setAttribute('color', new THREE.BufferAttribute(starCol, 3));
+  const stars = new THREE.Points(starGeo,
+    new THREE.PointsMaterial({ size:0.22, vertexColors:true, transparent:true, opacity:0.7 })
+  );
+  scene.add(stars);
+
+  // Nebula particles
+  const nebGeo = new THREE.BufferGeometry();
+  const nebCount = 600;
+  const nebPos = new Float32Array(nebCount * 3);
+  for (let i = 0; i < nebCount; i++) {
+    nebPos[i*3]   = (Math.random()-0.5) * 60;
+    nebPos[i*3+1] = (Math.random()-0.5) * 60;
+    nebPos[i*3+2] = (Math.random()-0.5) * 60;
+  }
+  nebGeo.setAttribute('position', new THREE.BufferAttribute(nebPos, 3));
+  const nebMat = new THREE.PointsMaterial({color:0x7b2fff,transparent:true,opacity:0.06,size:1.8});
+  scene.add(new THREE.Points(nebGeo, nebMat));
+
+  // Rotating planet
+  const planetGeo = new THREE.SphereGeometry(2.5, 32, 32);
+  const planetMat = new THREE.MeshPhongMaterial({
+    color:0x7b2fff, emissive:0x3b1fff, emissiveIntensity:0.2,
+    transparent:true, opacity:0.35
+  });
+  const planet = new THREE.Mesh(planetGeo, planetMat);
+  planet.position.set(8, -3, -10);
+  scene.add(planet);
+
+  // Planet ring
+  const ringGeo = new THREE.TorusGeometry(3.8, 0.18, 4, 80);
+  const ringMat = new THREE.MeshBasicMaterial({color:0x00f0ff,transparent:true,opacity:0.15,side:THREE.DoubleSide});
+  const ring = new THREE.Mesh(ringGeo, ringMat);
+  ring.rotation.x = Math.PI/3;
+  planet.add(ring);
+
+  // Ambient + point lights
+  scene.add(new THREE.AmbientLight(0x110022, 2));
+  const pl = new THREE.PointLight(0x00f0ff, 2, 40);
+  pl.position.set(10, 10, 10);
+  scene.add(pl);
+
+  let time = 0;
+  function animate() {
+    requestAnimationFrame(animate);
+    time += 0.005;
+    stars.rotation.y += 0.0002;
+    stars.rotation.x += 0.00008;
+    planet.rotation.y += 0.003;
+    ring.rotation.z += 0.001;
+    nebMat.opacity = 0.04 + 0.03 * Math.sin(time * 0.5);
+    renderer.render(scene, camera);
+  }
+  animate();
+})();
+
+// ════════════════════════════════════════════════════════════════
+// APP STATE
+// ════════════════════════════════════════════════════════════════
+let currentTopic = 'python';
+let currentLevel = 'basic';
+let searchQuery  = '';
+
+const TOPIC_META = {
+  python:     { icon:'🐍', label:'PYTHON · DATA SCIENCE',      color:'#00f0ff' },
+  sql:        { icon:'🗄️', label:'SQL · DATABASE QUERIES',      color:'#ffcc44' },
+  pandas:     { icon:'🐼', label:'PANDAS · DATA MANIPULATION',  color:'#7b2fff' },
+  numpy:      { icon:'🔢', label:'NUMPY · NUMERICAL COMPUTING', color:'#00ff9d' },
+  mlconcepts: { icon:'🧠', label:'ML CONCEPTS · FUNDAMENTALS',  color:'#ff00cc' },
+  mlalgos:    { icon:'⚡', label:'ML ALGORITHMS · REFERENCE',   color:'#ff6b4a' },
+  dsconcepts: { icon:'🔭', label:'DS CONCEPTS · WORKFLOWS',     color:'#44bbff' },
+};
+
+const TOPIC_ORDER = Object.keys(TOPIC_META);
+
+// ════════════════════════════════════════════════════════════════
+// RENDER
+// ════════════════════════════════════════════════════════════════
+function render() {
+  const topic = TOPICS[currentTopic];
+  const sections = (topic[currentLevel] || topic.basic);
+  const q = searchQuery.toLowerCase();
+
+  // Filter
+  const filtered = sections.map(sec => ({
+    ...sec,
+    commands: sec.commands.filter(cmd =>
+      !q ||
+      cmd.desc.toLowerCase().includes(q) ||
+      cmd.code.toLowerCase().includes(q)
+    )
+  })).filter(sec => sec.commands.length > 0);
+
+  // Stats
+  const totalCmds = filtered.reduce((s, sec) => s + sec.commands.length, 0);
+  document.getElementById('stat-cmds').textContent = totalCmds;
+  document.getElementById('stat-secs').textContent = filtered.length;
+
+  // Section jumps
+  const secsEl = document.getElementById('cmd-sections');
+  secsEl.innerHTML = '';
+  filtered.forEach((sec, i) => {
+    const btn = document.createElement('button');
+    btn.className = 'sec-jump';
+    btn.textContent = sec.section;
+    btn.addEventListener('click', () => {
+      const secEls = document.querySelectorAll('.cs-section');
+      if (secEls[i]) secEls[i].scrollIntoView({ behavior:'smooth', block:'start' });
+    });
+    secsEl.appendChild(btn);
+  });
+
+  // KP title
+  document.getElementById('kp-title').textContent = topic.title + ' COMMANDS';
+  document.getElementById('kp-meta').textContent = `${totalCmds} COMMANDS · ${filtered.length} SECTIONS`;
+
+  // Content
+  const content = document.getElementById('cheat-content');
+  const noResults = document.getElementById('no-cmd-results');
+  content.innerHTML = '';
+
+  if (!filtered.length) {
+    noResults.classList.add('visible');
+    return;
+  }
+  noResults.classList.remove('visible');
+
+  const accent = TOPIC_META[currentTopic].color;
+
+  filtered.forEach((sec, si) => {
+    const secEl = document.createElement('div');
+    secEl.className = 'cs-section';
+    secEl.style.animationDelay = (si * 0.05) + 's';
+
+    const titleEl = document.createElement('div');
+    titleEl.className = 'cs-section-title';
+    titleEl.style.setProperty('--accent', accent);
+    titleEl.innerHTML = `${sec.section} <span class="section-count">${sec.commands.length}</span>`;
+    secEl.appendChild(titleEl);
+
+    const grid = document.createElement('div');
+    grid.className = 'cmd-grid';
+
+    sec.commands.forEach(cmd => {
+      const card = document.createElement('div');
+      card.className = 'cmd-card';
+      card.style.setProperty('--accent', accent);
+
+      const lang = (currentTopic === 'sql') ? 'language-sql' : 'language-python';
+      const showAnnotations = (currentTopic === 'mlconcepts' || currentTopic === 'dsconcepts');
+
+      let toolHTML = '';
+      if (showAnnotations && cmd.toolInfo) {
+        const t = cmd.toolInfo;
+        toolHTML = `<div class="cmd-tool-info">
+          <div class="cmd-tool-icon">${t.icon}</div>
+          <div class="cmd-tool-body">
+            <div class="cmd-tool-name">${t.library}</div>
+            <div class="cmd-tool-creator">${t.creator}</div>
+            <div class="cmd-tool-tagline">${t.tagline}</div>
+          </div>
+        </div>`;
+      }
+
+      let contextHTML = '';
+      if (showAnnotations && cmd.context) {
+        contextHTML = `<div class="cmd-context"><span class="cmd-context-icon">🗺️</span><span>${cmd.context}</span></div>`;
+      }
+
+      card.innerHTML = `
+        <div class="cmd-desc">${cmd.desc}</div>
+        ${toolHTML}
+        <div class="cmd-code-wrap">
+          <pre><code class="${lang}">${escHtml(cmd.code)}</code></pre>
+          <button class="cmd-copy">COPY</button>
+        </div>
+        ${contextHTML}`;
+
+      const copyBtn = card.querySelector('.cmd-copy');
+      copyBtn.addEventListener('click', () => {
+        navigator.clipboard.writeText(cmd.code).then(() => {
+          copyBtn.textContent = '✓ TRANSMITTED';
+          copyBtn.classList.add('copied');
+          setTimeout(() => {
+            copyBtn.textContent = 'COPY';
+            copyBtn.classList.remove('copied');
+          }, 2000);
+        }).catch(() => {
+          // Fallback
+          const ta = document.createElement('textarea');
+          ta.value = cmd.code;
+          document.body.appendChild(ta);
+          ta.select();
+          document.execCommand('copy');
+          document.body.removeChild(ta);
+          copyBtn.textContent = '✓ TRANSMITTED';
+          copyBtn.classList.add('copied');
+          setTimeout(() => { copyBtn.textContent = 'COPY'; copyBtn.classList.remove('copied'); }, 2000);
+        });
+      });
+
+      grid.appendChild(card);
+    });
+
+    secEl.appendChild(grid);
+    content.appendChild(secEl);
+  });
+
+  // Syntax highlight
+  Prism.highlightAllUnder(content);
+
+  // Update preview
+  updatePreview();
+}
+
+function escHtml(str) {
+  return str.replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;');
+}
+
+// ════════════════════════════════════════════════════════════════
+// DATA VISUALIZER PREVIEW
+// ════════════════════════════════════════════════════════════════
+const PREVIEWS = {
+  python: {
+    code: [
+      {n:'1',c:`<span class="dv-kw">import</span> numpy <span class="dv-kw">as</span> np`},
+      {n:'2',c:`<span class="dv-kw">import</span> pandas <span class="dv-kw">as</span> pd`},
+      {n:'3',c:``},
+      {n:'4',c:`df = pd.<span class="dv-fn">read_csv</span>(<span class="dv-str">'data.csv'</span>)`},
+      {n:'5',c:`df.<span class="dv-fn">head</span>(<span class="dv-num">5</span>)`},
+    ],
+    output: `   name   age  score\n0  Alice   25  88.5\n1  Bob     30  92.0\n2  Charlie 35  78.3`
+  },
+  sql: {
+    code: [
+      {n:'1',c:`<span class="dv-kw">SELECT</span> department,`},
+      {n:'2',c:`&nbsp;&nbsp;<span class="dv-fn">COUNT</span>(*) <span class="dv-kw">AS</span> total,`},
+      {n:'3',c:`&nbsp;&nbsp;<span class="dv-fn">AVG</span>(salary) <span class="dv-kw">AS</span> avg_pay`},
+      {n:'4',c:`<span class="dv-kw">FROM</span> employees`},
+      {n:'5',c:`<span class="dv-kw">GROUP BY</span> department;`},
+    ],
+    output: `department   total  avg_pay\nEngineering  42     95,000\nMarketing    18     72,000\nSales        31     68,500`
+  },
+  pandas: {
+    code: [
+      {n:'1',c:`df.<span class="dv-fn">groupby</span>(<span class="dv-str">'dept'</span>).<span class="dv-fn">agg</span>(`},
+      {n:'2',c:`&nbsp;&nbsp;avg_sal=(<span class="dv-str">'salary'</span>,<span class="dv-str">'mean'</span>),`},
+      {n:'3',c:`&nbsp;&nbsp;n_emp=(<span class="dv-str">'id'</span>,<span class="dv-str">'count'</span>)`},
+      {n:'4',c:`)`},
+    ],
+    output: `       avg_sal  n_emp\nEng    95000.0     42\nMkt    72000.0     18\nSales  68500.0     31`
+  },
+  numpy: {
+    code: [
+      {n:'1',c:`a = np.<span class="dv-fn">array</span>([[<span class="dv-num">1</span>,<span class="dv-num">2</span>],[<span class="dv-num">3</span>,<span class="dv-num">4</span>]])`},
+      {n:'2',c:`np.linalg.<span class="dv-fn">inv</span>(a)`},
+    ],
+    output: `array([[-2. ,  1. ],\n       [ 1.5, -0.5]])\ndet(a) = -2.0`
+  },
+  mlconcepts: {
+    code: [
+      {n:'1',c:`<span class="dv-kw">from</span> sklearn.metrics <span class="dv-kw">import</span>`},
+      {n:'2',c:`&nbsp;&nbsp;classification_report`},
+      {n:'3',c:``},
+      {n:'4',c:`<span class="dv-fn">print</span>(classification_report(`},
+      {n:'5',c:`&nbsp;&nbsp;y_test, y_pred))`},
+    ],
+    output: `              precision  recall  f1\nClass 0            0.92    0.94  0.93\nClass 1            0.89    0.86  0.87\nAccuracy                        0.91`
+  },
+  mlalgos: {
+    code: [
+      {n:'1',c:`rf = <span class="dv-fn">RandomForestClassifier</span>(`},
+      {n:'2',c:`&nbsp;&nbsp;n_estimators=<span class="dv-num">100</span>,`},
+      {n:'3',c:`&nbsp;&nbsp;max_depth=<span class="dv-num">5</span>, n_jobs=<span class="dv-num">-1</span>`},
+      {n:'4',c:`)`},
+      {n:'5',c:`rf.<span class="dv-fn">fit</span>(X_train, y_train)`},
+    ],
+    output: `Feature importances:\nage      0.31\nsalary   0.28\nyears    0.21\n...`
+  },
+  dsconcepts: {
+    code: [
+      {n:'1',c:`pipeline = <span class="dv-fn">Pipeline</span>([`},
+      {n:'2',c:`&nbsp;&nbsp;(<span class="dv-str">'prep'</span>, preprocessor),`},
+      {n:'3',c:`&nbsp;&nbsp;(<span class="dv-str">'model'</span>, rf)`},
+      {n:'4',c:`])`},
+      {n:'5',c:`pipeline.<span class="dv-fn">fit</span>(X_train, y_train)`},
+    ],
+    output: `Pipeline accuracy: 0.924\nCV score: 0.918 ± 0.012\nTest set AUC: 0.967`
+  }
+};
+
+function updatePreview() {
+  const prev = PREVIEWS[currentTopic];
+  if (!prev) return;
+
+  const previewEl = document.getElementById('dv-preview');
+  previewEl.innerHTML = prev.code.map(line => `
+    <div class="dv-code-line">
+      <span class="dv-line-no">${line.n}</span>
+      <span class="dv-line-code">${line.c || '&nbsp;'}</span>
+    </div>`).join('');
+
+  document.getElementById('dv-output-text').textContent = prev.output;
+}
+
+function shufflePreview() {
+  // Pick a random command from current topic and show its code
+  const topic = TOPICS[currentTopic];
+  const secs = topic[currentLevel] || topic.basic;
+  const allCmds = secs.flatMap(s => s.commands);
+  const cmd = allCmds[Math.floor(Math.random() * allCmds.length)];
+  if (!cmd) return;
+
+  const previewEl = document.getElementById('dv-preview');
+  const lines = cmd.code.split('\n').slice(0, 7);
+  previewEl.innerHTML = lines.map((line, i) => `
+    <div class="dv-code-line">
+      <span class="dv-line-no">${i+1}</span>
+      <span class="dv-line-code">${escHtml(line) || '&nbsp;'}</span>
+    </div>`).join('');
+  document.getElementById('dv-output-text').textContent = cmd.desc;
+}
+
+// ════════════════════════════════════════════════════════════════
+// NAVIGATION
+// ════════════════════════════════════════════════════════════════
+function switchTopic(topicId) {
+  if (topicId === currentTopic) return;
+  currentTopic = topicId;
+  currentLevel = 'basic';
+
+  // Update body accent
+  document.body.setAttribute('data-topic', topicId);
+
+  // Update planet buttons
+  document.querySelectorAll('.planet-btn').forEach(btn => {
+    btn.classList.toggle('active', btn.dataset.topic === topicId);
+  });
+
+  // Update level tabs
+  document.querySelectorAll('.ltab').forEach(t => {
+    t.classList.toggle('active', t.dataset.level === 'basic');
+  });
+
+  // Update badge
+  const meta = TOPIC_META[topicId];
+  document.getElementById('badge-icon').textContent = meta.icon;
+  document.getElementById('badge-text').textContent = meta.label;
+
+  const badge = document.getElementById('topic-badge');
+  badge.style.borderColor = meta.color;
+  badge.style.color = meta.color;
+  badge.style.background = `rgba(0,0,0,0)`;
+  badge.style.boxShadow = `0 0 20px -6px ${meta.color}`;
+
+  render();
+}
+
+function warpNext() {
+  const idx = TOPIC_ORDER.indexOf(currentTopic);
+  const nextIdx = (idx + 1) % TOPIC_ORDER.length;
+  switchTopic(TOPIC_ORDER[nextIdx]);
+  window.scrollTo({ top: 0, behavior: 'smooth' });
+}
+
+// ════════════════════════════════════════════════════════════════
+// EVENT WIRING
+// ════════════════════════════════════════════════════════════════
+document.querySelectorAll('.planet-btn').forEach(btn => {
+  btn.addEventListener('click', () => switchTopic(btn.dataset.topic));
+});
+
+document.querySelectorAll('.ltab').forEach(btn => {
+  btn.addEventListener('click', () => {
+    if (btn.dataset.level === currentLevel) return;
+    currentLevel = btn.dataset.level;
+    document.querySelectorAll('.ltab').forEach(t => t.classList.toggle('active', t.dataset.level === currentLevel));
+    render();
+  });
+});
+
+let searchTimer = null;
+document.getElementById('cheat-search').addEventListener('input', e => {
+  clearTimeout(searchTimer);
+  searchTimer = setTimeout(() => {
+    searchQuery = e.target.value.trim();
+    render();
+  }, 200);
+});
+
+// ════════════════════════════════════════════════════════════════
+// INIT
+// ════════════════════════════════════════════════════════════════
+render();
+</script>
+</body>
+</html>
