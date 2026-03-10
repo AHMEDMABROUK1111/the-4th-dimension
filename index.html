@@ -449,6 +449,79 @@ input[type=range]::-webkit-slider-thumb{
 .uc-slide{animation:ucSlide .35s cubic-bezier(.16,1,.3,1);}
 @keyframes ucSlide{from{opacity:0;transform:translateY(6px);}to{opacity:1;transform:none;}}
 
+/* ── CHEAT SHEETS STATION ───────────────────────── */
+#cs-station {
+  max-width:1280px; margin:0 auto 0;
+  padding:0 8px;
+  animation:fadeUp .8s .25s ease both;
+}
+.cs-station-card {
+  position:relative; overflow:hidden;
+  background:linear-gradient(135deg,rgba(0,240,255,.05) 0%,rgba(123,47,255,.08) 50%,rgba(255,0,204,.05) 100%);
+  border:1px solid rgba(0,240,255,.18);
+  border-radius:18px;padding:0;cursor:pointer;
+  transition:all .35s cubic-bezier(.16,1,.3,1);
+  text-decoration:none;display:block;
+  box-shadow:0 0 40px rgba(0,240,255,.04);
+}
+.cs-station-card:hover {
+  border-color:rgba(0,240,255,.5);
+  background:linear-gradient(135deg,rgba(0,240,255,.09) 0%,rgba(123,47,255,.12) 50%,rgba(255,0,204,.07) 100%);
+  box-shadow:0 20px 60px rgba(0,0,0,.4), 0 0 50px -10px rgba(0,240,255,.25);
+  transform:translateY(-3px);
+}
+.cs-station-card::before{
+  content:'';position:absolute;inset:0;
+  background:linear-gradient(90deg,transparent 0%,rgba(0,240,255,.04) 50%,transparent 100%);
+  transform:translateX(-100%);transition:transform .6s ease;
+}
+.cs-station-card:hover::before{transform:translateX(100%);}
+.cs-top-bar{height:3px;background:linear-gradient(90deg,var(--cyan),var(--purple),var(--magenta));border-radius:18px 18px 0 0;}
+.cs-inner{display:flex;align-items:center;gap:24px;padding:20px 28px 22px;}
+.cs-orbit{
+  flex-shrink:0;width:64px;height:64px;border-radius:50%;
+  background:linear-gradient(135deg,rgba(0,240,255,.15),rgba(123,47,255,.3));
+  border:1px solid rgba(0,240,255,.3);
+  display:flex;align-items:center;justify-content:center;
+  font-size:26px;position:relative;
+  box-shadow:0 0 24px rgba(0,240,255,.15), inset 0 0 20px rgba(123,47,255,.1);
+  animation:orbitPulse 3s ease-in-out infinite;
+}
+@keyframes orbitPulse{0%,100%{box-shadow:0 0 24px rgba(0,240,255,.15),inset 0 0 20px rgba(123,47,255,.1);}50%{box-shadow:0 0 40px rgba(0,240,255,.3),inset 0 0 30px rgba(123,47,255,.2);}}
+.cs-orbit::after{
+  content:'';position:absolute;inset:-8px;border-radius:50%;
+  border:1px dashed rgba(0,240,255,.2);
+  animation:orbitSpin 8s linear infinite;
+}
+@keyframes orbitSpin{from{transform:rotate(0deg);}to{transform:rotate(360deg);}}
+.cs-text{flex:1;min-width:0;}
+.cs-eyebrow{font-family:'Orbitron',sans-serif;font-size:9px;letter-spacing:.45em;color:var(--cyan);opacity:.6;margin-bottom:5px;}
+.cs-heading{font-family:'Orbitron',sans-serif;font-size:clamp(13px,1.8vw,19px);font-weight:900;
+  letter-spacing:.1em;color:#fff;margin-bottom:6px;}
+.cs-desc{font-size:12px;line-height:1.65;color:rgba(184,204,255,.6);max-width:680px;}
+.cs-pills{display:flex;flex-wrap:wrap;gap:7px;margin-top:12px;}
+.cs-pill{
+  font-family:'Orbitron',sans-serif;font-size:9px;letter-spacing:.18em;
+  padding:4px 11px;border-radius:20px;
+  border:1px solid rgba(255,255,255,.1);color:rgba(184,204,255,.55);
+  transition:all .2s;
+}
+.cs-station-card:hover .cs-pill{border-color:rgba(0,240,255,.25);color:rgba(184,204,255,.8);}
+.cs-cta{flex-shrink:0;text-align:right;}
+.cs-launch-btn{
+  font-family:'Orbitron',sans-serif;font-size:10px;letter-spacing:.2em;
+  padding:12px 22px;border-radius:10px;border:1px solid rgba(0,240,255,.35);
+  background:rgba(0,240,255,.08);color:var(--cyan);
+  transition:all .25s;white-space:nowrap;display:block;
+}
+.cs-station-card:hover .cs-launch-btn{
+  background:rgba(0,240,255,.18);border-color:var(--cyan);
+  box-shadow:0 0 20px rgba(0,240,255,.2);
+}
+.cs-launch-arrow{display:block;font-size:16px;margin-top:5px;text-align:center;opacity:.6;transition:transform .2s;}
+.cs-station-card:hover .cs-launch-arrow{transform:translateX(5px);opacity:1;}
+@media(max-width:600px){.cs-inner{flex-wrap:wrap;}.cs-cta{width:100%;}.cs-launch-btn{width:100%;text-align:center;}}
+
 /* ── GALLERY ENHANCEMENTS (style.css inlined) ── */
 /* ════════════════════════════════════════════════════════════════
    css/style.css  —  The 4th Dimension  |  Enhanced Gallery UI
@@ -954,6 +1027,34 @@ input[type=range]::-webkit-slider-thumb{
     <div class="brand-eyebrow">IMMERSIVE 3D MACHINE LEARNING PLATFORM</div>
     <div class="brand-title">THE 4TH DIMENSION</div>
     <div class="brand-sub">NAVIGATE · EXPLORE · UNDERSTAND</div>
+  </div>
+
+  <!-- ── CHEAT SHEETS STATION ──────────────────── -->
+  <div id="cs-station">
+    <a href="cheatsheets.html" class="cs-station-card" aria-label="Open Cheat Sheets">
+      <div class="cs-top-bar"></div>
+      <div class="cs-inner">
+        <div class="cs-orbit">📡</div>
+        <div class="cs-text">
+          <div class="cs-eyebrow">RESOURCE STATION · 7 TOPICS</div>
+          <div class="cs-heading">CHEAT SHEETS &amp; QUICK REFERENCE</div>
+          <div class="cs-desc">Your mission-control for data science commands. Python, SQL, Pandas, NumPy, ML algorithms, and full workflow guides — all in one cockpit with live syntax highlighting.</div>
+          <div class="cs-pills">
+            <span class="cs-pill">🐍 PYTHON</span>
+            <span class="cs-pill">🗄️ SQL</span>
+            <span class="cs-pill">🐼 PANDAS</span>
+            <span class="cs-pill">🔢 NUMPY</span>
+            <span class="cs-pill">🧠 ML CONCEPTS</span>
+            <span class="cs-pill">⚡ ML ALGORITHMS</span>
+            <span class="cs-pill">🔭 DS WORKFLOWS</span>
+          </div>
+        </div>
+        <div class="cs-cta">
+          <div class="cs-launch-btn">OPEN STARSHIP →</div>
+          <div class="cs-launch-arrow">⟶</div>
+        </div>
+      </div>
+    </a>
   </div>
 
   <!-- ── GALLERY TOOLBAR ─────────────────────────────── -->
@@ -1475,6 +1576,83 @@ const USE_CASES = {
     { emoji:'🧬', industry:'PROTEIN FOLDING', title:'AlphaFold Structure Prediction',
       desc:'DeepMind\'s AlphaFold uses transformer attention over amino acid sequences to predict 3D protein structures.',
       impact:'🔬 Solved 200M+ protein structures in 18 months — 50-year biology grand challenge cracked.' },
+  ],
+  gmm: [
+    { emoji:'🎵', industry:'MUSIC TECH', title:'Speaker Diarisation',
+      desc:'GMMs model each speaker\'s voice as a Gaussian component in acoustic feature space, enabling automatic "who spoke when" labeling.',
+      impact:'🎙️ Powers speaker separation in Google Meet, reducing transcription error rate by 38%.' },
+    { emoji:'🖼️', industry:'COMPUTER VISION', title:'Background Subtraction',
+      desc:'Each pixel\'s colour history is modelled as a GMM; pixels that don\'t fit any component are flagged as foreground motion.',
+      impact:'🎥 Used in CCTV systems worldwide — detects 97% of motion events with near-zero false alarms.' },
+    { emoji:'📡', industry:'TELECOMMUNICATIONS', title:'Signal Anomaly Detection',
+      desc:'Network engineers model normal traffic patterns as Gaussian mixtures and flag packets falling outside all components.',
+      impact:'⚠️ Catches 99.2% of DDoS precursors an average of 8 minutes before attack onset.' },
+  ],
+  hierarchical: [
+    { emoji:'🧬', industry:'GENOMICS', title:'Phylogenetic Tree Construction',
+      desc:'Biologists use hierarchical clustering on DNA sequences to reconstruct evolutionary trees of life from molecular data.',
+      impact:'🌱 Resolved the placement of 100+ previously ambiguous species in the tree of life.' },
+    { emoji:'🏦', industry:'FINANCE', title:'Asset Correlation Clustering',
+      desc:'Portfolio managers cluster assets by return correlation to identify diversification opportunities and reduce systemic risk.',
+      impact:'📉 Reduced portfolio drawdown by 29% vs. market-cap weighting in a decade-long backtest.' },
+    { emoji:'📚', industry:'DIGITAL LIBRARIES', title:'Document Topic Grouping',
+      desc:'Digital libraries apply hierarchical clustering to TF-IDF vectors, auto-generating multi-level topic taxonomies.',
+      impact:'📖 Used by PubMed to organise 35M+ papers into browsable scientific hierarchies.' },
+  ],
+  knn: [
+    { emoji:'🎬', industry:'STREAMING', title:'Content Recommendation',
+      desc:'Netflix finds the K most similar movies to what a user just watched (in a learned embedding space) and recommends them.',
+      impact:'📺 KNN-based collaborative filtering drives 80% of Netflix watch time decisions.' },
+    { emoji:'🏥', industry:'MEDICAL DIAGNOSIS', title:'Patient Similarity Matching',
+      desc:'Clinicians retrieve the K most similar past patients by symptom vectors to inform treatment decisions for rare conditions.',
+      impact:'💊 Reduced misdiagnosis rate for rare diseases by 41% in Johns Hopkins trial.' },
+    { emoji:'🌍', industry:'GEOSPATIAL', title:'Real-Time Crime Prediction',
+      desc:'Police departments predict crime likelihood at a location by the crime rate of its K nearest grid cells in historical data.',
+      impact:'🚔 Reduced response times by 15% and prevented 18% more crimes in Los Angeles pilot.' },
+  ],
+  logreg: [
+    { emoji:'💳', industry:'BANKING', title:'Credit Default Prediction',
+      desc:'Banks use logistic regression to estimate the probability a loan applicant defaults, balancing precision and interpretability for regulators.',
+      impact:'✅ Still the primary model at 70% of regulated financial institutions due to interpretability requirements.' },
+    { emoji:'🩺', industry:'CLINICAL RESEARCH', title:'Disease Risk Scoring',
+      desc:'The Framingham Heart Study logistic regression assigns 10-year cardiovascular risk scores used by cardiologists globally.',
+      impact:'❤️ This model has guided preventive treatment for over 100 million patients worldwide.' },
+    { emoji:'📧', industry:'EMAIL SECURITY', title:'Phishing URL Detection',
+      desc:'Security scanners extract URL features (length, special chars, HTTPS) and classify phishing risk in real-time via logistic regression.',
+      impact:'🛡️ Deployed in Chrome Safe Browsing — blocks 100M+ phishing attempts daily.' },
+  ],
+  cnn: [
+    { emoji:'🔬', industry:'MEDICAL IMAGING', title:'Chest X-Ray Diagnosis',
+      desc:'CheXNet, a CNN trained on 100K chest X-rays, detects 14 pathologies including pneumonia at radiologist-level accuracy.',
+      impact:'🏥 Identifies pneumonia from X-rays in 1.5 seconds — 10× faster than manual review.' },
+    { emoji:'🚗', industry:'AUTONOMOUS VEHICLES', title:'Real-Time Object Detection',
+      desc:'Tesla Autopilot runs CNNs on 8-camera arrays at 36 FPS to detect pedestrians, vehicles, and road markings simultaneously.',
+      impact:'🛣️ Achieves 99.9% mAP on highway object detection — below-human false-positive rate.' },
+    { emoji:'🌾', industry:'AGRICULTURE', title:'Crop Disease Detection',
+      desc:'PlantVillage trains CNNs on 54,000 leaf images to identify 26 diseases from smartphone photos in the field.',
+      impact:'🌱 Deployed to 10M+ farmers in sub-Saharan Africa — reduced crop loss by 22% per season.' },
+  ],
+  autoencoder: [
+    { emoji:'🔐', industry:'CYBERSECURITY', title:'Network Intrusion Detection',
+      desc:'Autoencoders trained on normal traffic learn a compact latent representation; anomalous packets fail to reconstruct accurately.',
+      impact:'⚠️ Detects novel zero-day exploits with 93% precision before signature databases are updated.' },
+    { emoji:'🎞️', industry:'STREAMING', title:'Video Super-Resolution',
+      desc:'Netflix uses autoencoder-based compression to stream 4K video at 2K bitrates by learning perceptual redundancy patterns.',
+      impact:'📡 Reduced bandwidth costs by 20% while maintaining viewer-reported quality scores.' },
+    { emoji:'💊', industry:'DRUG DISCOVERY', title:'Molecular Generation',
+      desc:'Variational autoencoders encode drug molecules to continuous latent space, enabling smooth interpolation between compounds.',
+      impact:'🧪 Insilico Medicine generated a novel fibrosis drug candidate in 21 days (vs 5 years typical).' },
+  ],
+  umap: [
+    { emoji:'🧬', industry:'SINGLE-CELL BIOLOGY', title:'Cell Type Atlas',
+      desc:'The Human Cell Atlas project uses UMAP to visualise 4M+ cells from 50+ organs in a single 2D map, revealing previously unknown cell subtypes.',
+      impact:'🔬 Discovered 12 new human cell types in a single 2022 paper using UMAP-based clustering.' },
+    { emoji:'🤖', industry:'AI INTERPRETABILITY', title:'Embedding Space Auditing',
+      desc:'ML teams UMAP large language model representations to detect spurious correlations and demographic biases before deployment.',
+      impact:'⚖️ Caught racial bias in a hiring model\'s embeddings, preventing discriminatory decisions at scale.' },
+    { emoji:'🎨', industry:'GENERATIVE ART', title:'Latent Space Navigation',
+      desc:'Artists use UMAP to map GAN latent spaces, enabling smooth visual journeys through the model\'s learned concept landscape.',
+      impact:'🖼️ Runway ML\'s UMAP-guided interface lets creators explore 10M+ generated frames intuitively.' },
   ],
 };
 
@@ -2224,6 +2402,13 @@ const ALGO_INIT = {
   lstm: initLSTM,
   gan: initGAN,
   transformer: initTransformer,
+  gmm: initGMM,
+  hierarchical: initHierarchical,
+  knn: initKNN,
+  logreg: initLogReg,
+  cnn: initCNN,
+  autoencoder: initAutoencoder,
+  umap: initUMAP,
 };
 
 // ════════════════════════════════════════════════════════════════
@@ -2766,6 +2951,649 @@ function initTransformer(group, params, onMetrics) {
   build(params);
   return { animate:(dt,t)=>state.animate&&state.animate(dt,t), onParam:()=>{}, dispose:()=>clearGroup(group) };
 }
+
+// ════════════════════════════════════════════════════════════════
+// ── GAUSSIAN MIXTURE MODEL ────────────────────────────────────
+// ════════════════════════════════════════════════════════════════
+function initGMM(group, params, onMetrics) {
+  const state = {};
+
+  function build(p) {
+    clearGroup(group);
+    const K = Math.round(p.k);
+    const covType = Math.round(p.cov); // 1=spherical 2=diagonal 3=full
+
+    const angles = Array.from({length:K}, (_,i) => (i/K)*Math.PI*2);
+    const centers = angles.map(a => new THREE.Vector3(
+      4*Math.cos(a), (Math.random()-0.5)*2.5, 4*Math.sin(a)
+    ));
+    const scales = centers.map(() => ({
+      x: 0.9+Math.random()*1.1,
+      y: covType>1 ? 0.5+Math.random()*1.0 : 1.0,
+      z: covType>1 ? 0.6+Math.random()*0.8 : 1.0
+    }));
+    const rotZ = centers.map(() => covType===3 ? (Math.random()-0.5)*0.9 : 0);
+
+    // Data points colored by component
+    const N_per = 42;
+    const allMeshes = [];
+    centers.forEach((c,ci) => {
+      const col = PALETTE[ci % PALETTE.length];
+      for (let i=0;i<N_per;i++){
+        const sc=scales[ci];
+        const pt = new THREE.Vector3(c.x+randn()*sc.x, c.y+randn()*sc.y, c.z+randn()*sc.z);
+        const geo = new THREE.SphereGeometry(0.09,8,8);
+        const mat = new THREE.MeshPhongMaterial({color:col,emissive:col,emissiveIntensity:.18,transparent:true,opacity:.8});
+        const m = new THREE.Mesh(geo,mat);
+        m.position.copy(pt);
+        group.add(m);
+        allMeshes.push({m,mat,ci,baseOpacity:.8});
+      }
+    });
+
+    // Gaussian ellipsoid shells per component
+    const ellipsoids = [];
+    centers.forEach((c,ci) => {
+      const col = new THREE.Color(PALETTE[ci%PALETTE.length]);
+      const sc = scales[ci];
+      // Solid fill
+      const geo = new THREE.SphereGeometry(1,24,16);
+      const mat = new THREE.MeshPhongMaterial({color:col,emissive:col,emissiveIntensity:.08,
+        transparent:true,opacity:.1,side:THREE.DoubleSide,depthWrite:false});
+      const m = new THREE.Mesh(geo,mat);
+      m.position.copy(c); m.scale.set(sc.x*1.9,sc.y*1.9,sc.z*1.9);
+      if(covType===3) m.rotation.z = rotZ[ci];
+      group.add(m);
+      // Wireframe shell
+      const wgeo = new THREE.SphereGeometry(1,18,10);
+      const wmat = new THREE.MeshBasicMaterial({color:col,transparent:true,opacity:.28,wireframe:true});
+      const w = new THREE.Mesh(wgeo,wmat);
+      w.position.copy(c); w.scale.set(sc.x*1.9,sc.y*1.9,sc.z*1.9);
+      if(covType===3) w.rotation.z = rotZ[ci];
+      group.add(w);
+      // Center marker
+      const glow = glowSphere(0.4, PALETTE[ci%PALETTE.length], 0.28);
+      glow.position.copy(c); group.add(glow);
+      const core = new THREE.Mesh(new THREE.SphereGeometry(0.18,12,12),
+        new THREE.MeshPhongMaterial({color:col,emissive:col,emissiveIntensity:.6}));
+      core.position.copy(c); group.add(core);
+      ellipsoids.push({mat,wmat,glow,ci});
+    });
+
+    state.ellipsoids = ellipsoids;
+    const covNames = {1:'SPHERICAL',2:'DIAGONAL',3:'FULL'};
+    onMetrics({'COMPONENTS':K,'COV TYPE':covNames[covType],'DATA POINTS':K*N_per,'ALGORITHM':'E-M'});
+
+    state.animate = (dt,t) => {
+      ellipsoids.forEach(({mat,wmat,glow},i) => {
+        const ph = t*0.7+i*1.3;
+        mat.opacity = 0.07+0.05*Math.sin(ph);
+        wmat.opacity = 0.18+0.14*Math.sin(ph+0.6);
+        glow.material.opacity = 0.18+0.12*Math.sin(ph+1.1);
+      });
+    };
+  }
+
+  build(params);
+  return {
+    animate:(dt,t)=>state.animate&&state.animate(dt,t),
+    onParam:()=>{}, dispose:()=>clearGroup(group)
+  };
+}
+
+// ════════════════════════════════════════════════════════════════
+// ── HIERARCHICAL CLUSTERING ───────────────────────────────────
+// ════════════════════════════════════════════════════════════════
+function initHierarchical(group, params, onMetrics) {
+  const state = {};
+
+  function build(p) {
+    clearGroup(group);
+    const N = Math.round(p.n);
+    const linkage = Math.round(p.linkage);
+    const linkNames = {1:'SINGLE',2:'COMPLETE',3:'WARD'};
+
+    // 6 natural sub-clusters — we'll merge into N target clusters
+    const naturalCenters = [
+      new THREE.Vector3(3.5,2,1), new THREE.Vector3(-3.2,2.4,-1.2),
+      new THREE.Vector3(0.4,-3.8,2.2), new THREE.Vector3(2.8,-1.1,-3.1),
+      new THREE.Vector3(-2.3,1.8,3.2), new THREE.Vector3(-1.4,-2.1,-2.6),
+    ];
+    const K_NATURAL = naturalCenters.length;
+
+    // Generate points
+    const pts = [], ptLabels = [];
+    naturalCenters.forEach((c,ci) => {
+      for(let i=0;i<18;i++){
+        pts.push(new THREE.Vector3(c.x+randn()*0.85,c.y+randn()*0.85,c.z+randn()*0.85));
+        ptLabels.push(ci);
+      }
+    });
+
+    // Agglomerative merging: reduce from K_NATURAL → N clusters
+    let clusters = naturalCenters.map((c,ci) => ({
+      center:c.clone(), indices: pts.map((_,i)=>i).filter(i=>ptLabels[i]===ci)
+    }));
+    const mergeLinks = [];
+    while(clusters.length > N) {
+      let best={d:Infinity,i:-1,j:-1};
+      for(let i=0;i<clusters.length;i++)
+        for(let j=i+1;j<clusters.length;j++){
+          const d=clusters[i].center.distanceTo(clusters[j].center);
+          if(d<best.d) best={d,i,j};
+        }
+      mergeLinks.push({a:clusters[best.i].center.clone(), b:clusters[best.j].center.clone()});
+      const mc = clusters[best.i].center.clone().add(clusters[best.j].center).multiplyScalar(0.5);
+      clusters.splice(best.j,1);
+      clusters.splice(best.i,1,{
+        center:mc,
+        indices:[...clusters[best.i]?.indices||[], ...clusters[best.j]?.indices||[]]
+      });
+    }
+
+    // Draw points colored by final cluster
+    clusters.forEach((cl,idx) => {
+      const col = PALETTE[idx%PALETTE.length];
+      cl.indices.forEach(pi => {
+        if(!pts[pi]) return;
+        const geo = new THREE.SphereGeometry(0.12,8,8);
+        const mat = new THREE.MeshPhongMaterial({color:col,emissive:col,emissiveIntensity:.22,transparent:true,opacity:.85});
+        const m = new THREE.Mesh(geo,mat);
+        m.position.copy(pts[pi]); group.add(m);
+      });
+      // Cluster centroid
+      const glow = glowSphere(1.6,col,0.06); glow.position.copy(cl.center); group.add(glow);
+      const core = new THREE.Mesh(new THREE.SphereGeometry(0.22,14,14),
+        new THREE.MeshPhongMaterial({color:col,emissive:col,emissiveIntensity:.55}));
+      core.position.copy(cl.center); group.add(core);
+    });
+
+    // Merge dendrogram links
+    mergeLinks.forEach((ml,i) => {
+      const mid = ml.a.clone().add(ml.b).multiplyScalar(0.5);
+      mid.y += 1.5 + i*0.4;
+      const pts3 = [ml.a, mid, ml.b];
+      const geo = new THREE.BufferGeometry().setFromPoints(pts3);
+      const mat = new THREE.LineBasicMaterial({color:0xffcc44,transparent:true,opacity:Math.max(0.15,0.55-i*0.08)});
+      group.add(new THREE.Line(geo,mat));
+      // Node at mid point
+      const nodeMesh = new THREE.Mesh(new THREE.SphereGeometry(0.1,8,8),
+        new THREE.MeshBasicMaterial({color:0xffcc44,transparent:true,opacity:0.7}));
+      nodeMesh.position.copy(mid); group.add(nodeMesh);
+    });
+
+    onMetrics({'FINAL CLUSTERS':N,'LINKAGE':linkNames[linkage],'MERGES':K_NATURAL-N,'TOTAL POINTS':pts.length});
+
+    state.animate = (dt,t) => {
+      group.children.forEach((c,i) => {
+        if(c instanceof THREE.Points) c.material.opacity = 0.75+0.1*Math.sin(t*0.9+i*0.4);
+      });
+    };
+  }
+
+  build(params);
+  return {
+    animate:(dt,t)=>state.animate&&state.animate(dt,t),
+    onParam:()=>{}, dispose:()=>clearGroup(group)
+  };
+}
+
+// ════════════════════════════════════════════════════════════════
+// ── K-NEAREST NEIGHBORS ───────────────────────────────────────
+// ════════════════════════════════════════════════════════════════
+function initKNN(group, params, onMetrics) {
+  const state = {};
+
+  function build(p) {
+    clearGroup(group);
+    const K = Math.round(p.k);
+    const noise = p.noise;
+
+    // 2 classes
+    const centers = [new THREE.Vector3(2.8,1.8,1.2), new THREE.Vector3(-2.8,-1.5,-1.0)];
+    const pts = [], labels = [];
+    centers.forEach((c,ci) => {
+      for(let i=0;i<55;i++){
+        pts.push(new THREE.Vector3(
+          c.x+randn()*1.2+randn()*noise*0.4,
+          c.y+randn()*1.2+randn()*noise*0.4,
+          c.z+randn()*1.2+randn()*noise*0.4
+        ));
+        labels.push(ci);
+      }
+    });
+
+    const meshes = [];
+    pts.forEach((pt,i) => {
+      const col = labels[i]===0 ? 0x00f0ff : 0xff00cc;
+      const geo = new THREE.SphereGeometry(0.1,8,8);
+      const mat = new THREE.MeshPhongMaterial({color:col,emissive:col,emissiveIntensity:.18,transparent:true,opacity:.8});
+      const m = new THREE.Mesh(geo,mat);
+      m.position.copy(pt); group.add(m);
+      meshes.push({m,pt,label:labels[i],mat,basecol:col});
+    });
+
+    // Query point (gold)
+    const qMesh = new THREE.Mesh(new THREE.SphereGeometry(0.22,16,16),
+      new THREE.MeshPhongMaterial({color:0xffcc44,emissive:0xffcc44,emissiveIntensity:.65}));
+    group.add(qMesh);
+    const qGlow = glowSphere(0.45,0xffcc44,0.28); group.add(qGlow);
+
+    // K-radius sphere
+    const ksMat = new THREE.MeshBasicMaterial({color:0xffcc44,transparent:true,opacity:.05,side:THREE.DoubleSide,depthWrite:false});
+    const ks = new THREE.Mesh(new THREE.SphereGeometry(1,28,18),ksMat);
+    group.add(ks);
+    const kwMat = new THREE.MeshBasicMaterial({color:0xffcc44,transparent:true,opacity:.18,wireframe:true});
+    const kw = new THREE.Mesh(new THREE.SphereGeometry(1,16,12),kwMat);
+    group.add(kw);
+
+    state.meshes=meshes; state.qMesh=qMesh; state.qGlow=qGlow; state.ks=ks; state.kw=kw;
+    state.K=K;
+    const waypoints = [
+      new THREE.Vector3(0.4,0.3,0.6), new THREE.Vector3(1.6,-0.4,0.2),
+      new THREE.Vector3(-0.3,1.1,-0.8), new THREE.Vector3(-1.4,-0.3,0.6),
+      new THREE.Vector3(0.6,-1.4,0.9), new THREE.Vector3(-0.5,0.8,-1.2),
+      new THREE.Vector3(1.0,1.2,-0.5), new THREE.Vector3(-1.2,-1.1,0.3)
+    ];
+    state.wps=waypoints; state.wpIdx=0; state.wpTimer=0;
+    state.qPos=waypoints[0].clone();
+
+    function updateQuery(qp) {
+      const dists=meshes.map((m,i)=>({i,d:m.pt.distanceTo(qp),label:m.label})).sort((a,b)=>a.d-b.d);
+      const kN=dists.slice(0,K);
+      const kDist=kN[K-1].d;
+      meshes.forEach((m,i)=>{
+        const isN=kN.some(kn=>kn.i===i);
+        m.mat.emissiveIntensity=isN?0.9:0.12;
+        m.mat.opacity=isN?1.0:0.4;
+        if(isN){ m.mat.color.setHex(0xffffff); m.mat.emissive.setHex(m.basecol); }
+        else { m.mat.color.setHex(m.basecol); m.mat.emissive.setHex(m.basecol); }
+      });
+      const votes=[0,0]; kN.forEach(kn=>votes[kn.label]++);
+      const pred=votes[0]>votes[1]?0:1;
+      const predCol=pred===0?0x00f0ff:0xff00cc;
+      qMesh.material.color.setHex(predCol); qMesh.material.emissive.setHex(predCol);
+      ks.scale.setScalar(kDist); kw.scale.setScalar(kDist);
+      ks.position.copy(qp); kw.position.copy(qp); qMesh.position.copy(qp); qGlow.position.copy(qp);
+      onMetrics({'K':K,'CLASS A VOTES':votes[0],'CLASS B VOTES':votes[1],'PREDICTION':pred===0?'CLASS A':'CLASS B'});
+    }
+    updateQuery(state.qPos);
+
+    state.animate=(dt,t)=>{
+      state.wpTimer+=dt;
+      if(state.wpTimer>2.8){state.wpTimer=0;state.wpIdx=(state.wpIdx+1)%state.wps.length;}
+      const from=state.wps[state.wpIdx], to=state.wps[(state.wpIdx+1)%state.wps.length];
+      const ease=t=>t<0.5?2*t*t:1-Math.pow(-2*t+2,2)/2;
+      state.qPos.lerpVectors(from,to,ease(Math.min(state.wpTimer/2.8,1)));
+      updateQuery(state.qPos);
+      ksMat.opacity=0.04+0.025*Math.sin(t*2.2);
+    };
+  }
+
+  build(params);
+  return {
+    animate:(dt,t)=>state.animate&&state.animate(dt,t),
+    onParam:()=>{}, dispose:()=>clearGroup(group)
+  };
+}
+
+// ════════════════════════════════════════════════════════════════
+// ── LOGISTIC REGRESSION ──────────────────────────────────────
+// ════════════════════════════════════════════════════════════════
+function initLogReg(group, params, onMetrics) {
+  const state = {};
+
+  function build(p) {
+    clearGroup(group);
+    const noise = p.noise, C = p.C;
+
+    const N=70;
+    const ptsA=[], ptsB=[];
+    for(let i=0;i<N;i++){
+      ptsA.push(new THREE.Vector3( 2.8+randn()*1.1+randn()*noise*0.45, randn()*3.5, randn()*3.5));
+      ptsB.push(new THREE.Vector3(-2.8+randn()*1.1-randn()*noise*0.45, randn()*3.5, randn()*3.5));
+    }
+
+    [[ptsA,0x00f0ff],[ptsB,0xff00cc]].forEach(([pts,col])=>{
+      const geo=new THREE.BufferGeometry();
+      const pos=new Float32Array(pts.length*3);
+      pts.forEach((pt,i)=>{pos[i*3]=pt.x;pos[i*3+1]=pt.y;pos[i*3+2]=pt.z;});
+      geo.setAttribute('position',new THREE.BufferAttribute(pos,3));
+      group.add(new THREE.Points(geo,new THREE.PointsMaterial({size:.13,color:col,transparent:true,opacity:.85})));
+    });
+
+    // Sigmoid warped decision surface
+    const tiltY = (Math.random()-0.5)*0.18*(1.0/Math.max(0.5,C));
+    const tiltZ = (Math.random()-0.5)*0.12*(1.0/Math.max(0.5,C));
+    const mainGeo = new THREE.PlaneGeometry(10,10,24,24);
+    const mPos = mainGeo.attributes.position;
+    for(let i=0;i<mPos.count;i++){
+      const y=mPos.getY(i), z=mPos.getZ(i);
+      // Sigmoid surface: slight curvature
+      const xOffset = tiltY*y + tiltZ*z;
+      mPos.setX(i, xOffset);
+    }
+    mainGeo.computeVertexNormals();
+    const mainMat = new THREE.MeshPhongMaterial({color:0xffcc44,emissive:0x221a00,transparent:true,opacity:.38,side:THREE.DoubleSide,depthWrite:false});
+    group.add(new THREE.Mesh(mainGeo,mainMat));
+    // Edge glow
+    const eMat = new THREE.LineBasicMaterial({color:0xffcc44,transparent:true,opacity:.35});
+    group.add(new THREE.LineSegments(new THREE.EdgesGeometry(mainGeo),eMat));
+
+    // Probability gradient bands (contour lines at p=0.25 and p=0.75)
+    for(let b=1;b<=3;b++){
+      const bGeo = new THREE.PlaneGeometry(10,10,10,10);
+      const bPos = bGeo.attributes.position;
+      const xb = b*1.5*(b%2===0?1:-1);
+      for(let i=0;i<bPos.count;i++){
+        const y=bPos.getY(i), z=bPos.getZ(i);
+        bPos.setX(i, xb + tiltY*y + tiltZ*z);
+      }
+      bGeo.computeVertexNormals();
+      group.add(new THREE.Mesh(bGeo,new THREE.MeshBasicMaterial({
+        color:0xffcc44,transparent:true,opacity:.04,side:THREE.DoubleSide,depthWrite:false
+      })));
+    }
+
+    // Compute accuracy
+    const all=[...ptsA.map(q=>({q,l:0})),...ptsB.map(q=>({q,l:1}))];
+    let correct=0;
+    all.forEach(({q,l})=>{ if((q.x+tiltY*q.y+tiltZ*q.z>0?0:1)===l) correct++; });
+    const acc=(correct/all.length*100).toFixed(1);
+    onMetrics({'ACCURACY':acc+'%','C':C.toFixed(1),'BOUNDARY':'LINEAR','DATA POINTS':N*2});
+
+    state.mainMat=mainMat;
+    state.animate=(dt,t)=>{ mainMat.opacity=0.3+0.1*Math.sin(t*1.0); };
+  }
+
+  build(params);
+  return {
+    animate:(dt,t)=>state.animate&&state.animate(dt,t),
+    onParam:()=>{}, dispose:()=>clearGroup(group)
+  };
+}
+
+// ════════════════════════════════════════════════════════════════
+// ── CONVOLUTIONAL NET ─────────────────────────────────────────
+// ════════════════════════════════════════════════════════════════
+function initCNN(group, params, onMetrics) {
+  const state = {};
+
+  function build(p) {
+    clearGroup(group);
+    const nFilters = Math.round(p.filters);
+    const nLayers  = Math.round(p.layers);
+
+    // Layer positions spread along X axis
+    const LAYER_COLS = [0x00f0ff,0x7b2fff,0xff00cc,0xff6b4a,0xffcc44,0x00ff9d];
+    const spacing = 10/(nLayers+1);
+    const layerXs = Array.from({length:nLayers+1},(_,i)=> -5+i*spacing+(spacing/2));
+
+    layerXs.forEach((x,li) => {
+      const isInput = li===0, isOutput = li===nLayers;
+      const nMaps = isInput?3 : isOutput?1 : Math.min(nFilters, 10);
+      const col = new THREE.Color(LAYER_COLS[li%LAYER_COLS.length]);
+      const size = Math.max(1.0, 3.2 - li*0.35);
+
+      for(let fi=0;fi<nMaps;fi++){
+        const zOff = (fi-(nMaps-1)/2)*0.28;
+        const geo = new THREE.BoxGeometry(size*0.6, size, 0.1);
+        const mat = new THREE.MeshPhongMaterial({color:col,emissive:col,
+          emissiveIntensity:.12,transparent:true,opacity:0.4-fi*0.025,side:THREE.DoubleSide});
+        const m = new THREE.Mesh(geo,mat);
+        m.position.set(x,0,zOff); group.add(m);
+        const em = new THREE.LineSegments(new THREE.EdgesGeometry(geo),
+          new THREE.LineBasicMaterial({color:col,transparent:true,opacity:.5-fi*0.03}));
+        em.position.set(x,0,zOff); group.add(em);
+      }
+
+      // Column glow
+      const colGlow = glowSphere(0.25*size, LAYER_COLS[li%LAYER_COLS.length], 0.07);
+      colGlow.position.set(x,0,0); group.add(colGlow);
+    });
+
+    // Flow arrows between layers
+    layerXs.slice(0,-1).forEach((x1,li) => {
+      const x2=layerXs[li+1];
+      const col = LAYER_COLS[(li+1)%LAYER_COLS.length];
+      const pts3=[new THREE.Vector3(x1+0.35,0,0),new THREE.Vector3(x2-0.35,0,0)];
+      group.add(new THREE.Line(new THREE.BufferGeometry().setFromPoints(pts3),
+        new THREE.LineBasicMaterial({color:col,transparent:true,opacity:.25})));
+      group.add(new THREE.ArrowHelper(
+        new THREE.Vector3(1,0,0), new THREE.Vector3(x2-0.7,0,0), 0.45, col, 0.3, 0.15));
+    });
+
+    // Flowing activation particles
+    const particles=[];
+    for(let i=0;i<Math.min(nFilters*3,30);i++){
+      const li=Math.floor(Math.random()*nLayers);
+      const col=LAYER_COLS[li%LAYER_COLS.length];
+      const geo=new THREE.SphereGeometry(0.07,6,6);
+      const mat=new THREE.MeshBasicMaterial({color:col,transparent:true,opacity:.9});
+      const m=new THREE.Mesh(geo,mat); group.add(m);
+      particles.push({m,li,prog:Math.random(),speed:.3+Math.random()*.5});
+    }
+    state.particles=particles; state.layerXs=layerXs; state.nLayers=nLayers;
+    state.LAYER_COLS=LAYER_COLS;
+
+    const totalParams = nFilters*nFilters*3*nLayers+nFilters*nLayers;
+    onMetrics({'FILTERS':nFilters,'CONV LAYERS':nLayers,'PARAMS':totalParams,'FEATURE MAPS':nFilters*nLayers});
+
+    state.animate=(dt,t)=>{
+      state.particles.forEach(pp=>{
+        pp.prog+=dt*pp.speed;
+        if(pp.prog>1){pp.prog=0;pp.li=(pp.li+1)%state.nLayers;}
+        const x1=state.layerXs[pp.li], x2=state.layerXs[pp.li+1]||state.layerXs[pp.li]+spacing;
+        const y=0.6*Math.sin(t*2+pp.li*1.2)*pp.prog;
+        const z=0.3*Math.cos(t*1.5+pp.li*0.8)*pp.prog;
+        pp.m.position.set(x1*(1-pp.prog)+x2*pp.prog,y,z);
+        pp.m.material.opacity=0.5+0.5*Math.sin(pp.prog*Math.PI);
+      });
+    };
+  }
+
+  build(params);
+  return {
+    animate:(dt,t)=>state.animate&&state.animate(dt,t),
+    onParam:()=>{}, dispose:()=>clearGroup(group)
+  };
+}
+
+// ════════════════════════════════════════════════════════════════
+// ── AUTOENCODER ───────────────────────────────────────────────
+// ════════════════════════════════════════════════════════════════
+function initAutoencoder(group, params, onMetrics) {
+  const state = {};
+
+  function build(p) {
+    clearGroup(group);
+    const latentDim = Math.round(p.latent);
+    const noiseLevel = p.noise;
+
+    // Architecture: 6→4→2→latent→2→4→6
+    const encNodeCounts = [6,4,2];
+    const latNodes = Math.max(2, Math.min(Math.round(latentDim/4)+1, 5));
+    const decNodeCounts = [2,4,6];
+    const allLayers = [...encNodeCounts, latNodes, ...decNodeCounts];
+    const totalLayers = allLayers.length;
+    const xPositions = allLayers.map((_,li)=> -6 + li*(12/(totalLayers-1)));
+
+    const ENC_COL=0x00f0ff, LAT_COL=0xffcc44, DEC_COL=0x00ff9d, MID_IDX=3;
+
+    const nodeMeshes=[];
+    allLayers.forEach((n,li)=>{
+      const isLatent = li===MID_IDX;
+      const col = isLatent?LAT_COL : li<MID_IDX?ENC_COL:DEC_COL;
+      const x = xPositions[li];
+      for(let ni=0;ni<Math.min(n,8);ni++){
+        const y=(ni-(Math.min(n,8)-1)/2)*0.72;
+        const r = isLatent?0.2:0.15;
+        const geo=new THREE.SphereGeometry(r,12,12);
+        const mat=new THREE.MeshPhongMaterial({color:col,emissive:col,emissiveIntensity:isLatent?.5:.22,transparent:true,opacity:.88});
+        const m=new THREE.Mesh(geo,mat); m.position.set(x,y,0); group.add(m);
+        const gl=glowSphere(isLatent?.38:.28,col,isLatent?.22:.1);
+        gl.position.set(x,y,0); group.add(gl);
+        nodeMeshes.push({m,mat,gl,li,isLatent});
+      }
+    });
+
+    // Connections enc and dec (skip mid)
+    for(let li=0;li<totalLayers-1;li++){
+      const n1=Math.min(allLayers[li],8), n2=Math.min(allLayers[li+1],8);
+      const isLatent=li===MID_IDX-1||li===MID_IDX;
+      const col=isLatent?0xffcc44:li<MID_IDX?0x00f0ff:0x00ff9d;
+      for(let a=0;a<n1;a++) for(let b=0;b<n2;b++){
+        const p1=new THREE.Vector3(xPositions[li],(a-(n1-1)/2)*0.72,0);
+        const p2=new THREE.Vector3(xPositions[li+1],(b-(n2-1)/2)*0.72,0);
+        const lGeo=new THREE.BufferGeometry().setFromPoints([p1,p2]);
+        const lMat=new THREE.LineBasicMaterial({color:col,transparent:true,opacity:.06});
+        group.add(new THREE.Line(lGeo,lMat));
+      }
+    }
+
+    // Bottleneck ring
+    const ringGeo=new THREE.TorusGeometry(0.9,0.035,8,36);
+    group.add(new THREE.Mesh(ringGeo,new THREE.MeshBasicMaterial({color:LAT_COL,transparent:true,opacity:.35})));
+
+    // Input noise particles
+    if(noiseLevel>0.05){
+      for(let i=0;i<Math.round(noiseLevel*14);i++){
+        const m=new THREE.Mesh(new THREE.SphereGeometry(0.07,6,6),
+          new THREE.MeshBasicMaterial({color:0xff4444,transparent:true,opacity:.5}));
+        m.position.set(-6.5+(Math.random()-0.5)*0.7,(Math.random()-0.5)*3,(Math.random()-0.5)*1.5);
+        group.add(m);
+      }
+    }
+
+    // Flowing particles (enc → lat and lat → dec)
+    const particles=[];
+    for(let i=0;i<18;i++){
+      const isEnc=i<9;
+      const col=isEnc?ENC_COL:DEC_COL;
+      const m=new THREE.Mesh(new THREE.SphereGeometry(0.07,6,6),
+        new THREE.MeshBasicMaterial({color:col,transparent:true,opacity:.9}));
+      particles.push({m,prog:Math.random(),isEnc,speed:.28+Math.random()*.35});
+      group.add(m);
+    }
+    state.particles=particles; state.nodeMeshes=nodeMeshes;
+
+    const ratio=(encNodeCounts[0]**2/latentDim).toFixed(1);
+    onMetrics({'LATENT DIM':latentDim,'COMPRESSION':ratio+'×','NOISE LEVEL':noiseLevel.toFixed(2),'LAYERS':totalLayers});
+
+    state.animate=(dt,t)=>{
+      state.particles.forEach(pp=>{
+        pp.prog+=dt*pp.speed;
+        if(pp.prog>1) pp.prog=0;
+        const squeeze=0.7*(1-Math.abs(pp.prog*2-1));
+        if(pp.isEnc){
+          const x=-6+pp.prog*6.2;
+          pp.m.position.set(x,squeeze*0.8*Math.sin(t*2.5+pp.prog*4),squeeze*0.5*Math.cos(t*1.8+pp.prog*3));
+        } else {
+          const x=0+pp.prog*6.2;
+          pp.m.position.set(x,squeeze*0.8*Math.sin(t*2.2+pp.prog*4+2),squeeze*0.5*Math.cos(t*2.1+pp.prog*3));
+        }
+        pp.m.material.opacity=0.4+0.6*Math.sin(pp.prog*Math.PI);
+      });
+      state.nodeMeshes.forEach(({mat,gl,isLatent},i)=>{
+        if(isLatent){ mat.emissiveIntensity=0.35+0.25*Math.sin(t*1.8+i*0.6); gl.material.opacity=0.15+0.1*Math.sin(t*1.5); }
+      });
+    };
+  }
+
+  build(params);
+  return {
+    animate:(dt,t)=>state.animate&&state.animate(dt,t),
+    onParam:()=>{}, dispose:()=>clearGroup(group)
+  };
+}
+
+// ════════════════════════════════════════════════════════════════
+// ── UMAP ─────────────────────────────────────────────────────
+// ════════════════════════════════════════════════════════════════
+function initUMAP(group, params, onMetrics) {
+  const state = { iter:0, timer:0 };
+
+  function build(p) {
+    clearGroup(group);
+    state.iter=0; state.timer=0;
+    state.speed=1.8;
+
+    // 5 clusters — more than t-SNE to highlight UMAP's global structure preservation
+    const K=5, N_PER=26;
+    const trueC=[
+      new THREE.Vector3(4.8,2.2,0.5), new THREE.Vector3(-4.2,3.0,-1.2),
+      new THREE.Vector3(1.0,-4.6,2.8), new THREE.Vector3(-3.0,-2.4,-3.2),
+      new THREE.Vector3(2.2,3.8,-2.5),
+    ];
+    const pts=[];
+    trueC.forEach((tc,ci)=>{
+      for(let i=0;i<N_PER;i++){
+        pts.push({
+          cur:new THREE.Vector3((Math.random()-0.5)*15,(Math.random()-0.5)*15,(Math.random()-0.5)*15),
+          target:new THREE.Vector3(tc.x+randn()*1.0,tc.y+randn()*1.0,tc.z+randn()*1.0),
+          ci
+        });
+      }
+    });
+    state.pts=pts;
+
+    const meshes=[];
+    pts.forEach(pt=>{
+      const c=new THREE.Color(PALETTE[pt.ci%PALETTE.length]);
+      const geo=new THREE.SphereGeometry(0.11,8,8);
+      const mat=new THREE.MeshPhongMaterial({color:c,emissive:c,emissiveIntensity:.22,transparent:true,opacity:.85});
+      const m=new THREE.Mesh(geo,mat); m.position.copy(pt.cur); group.add(m);
+      meshes.push(m);
+    });
+    state.meshes=meshes;
+
+    // Fuzzy topological graph edges (UMAP's manifold graph)
+    const edges=[];
+    pts.forEach((pt,i)=>{
+      const sorted=pts.map((other,j)=>({j,d:pt.target.distanceTo(other.target)})).sort((a,b)=>a.d-b.d);
+      sorted.slice(1,4).forEach(({j})=>{
+        if(j<=i) return; // Avoid duplicates
+        const lGeo=new THREE.BufferGeometry().setFromPoints([pt.cur.clone(),pts[j].cur.clone()]);
+        const lMat=new THREE.LineBasicMaterial({color:PALETTE[pt.ci%PALETTE.length],transparent:true,opacity:0});
+        const line=new THREE.Line(lGeo,lMat); group.add(line);
+        edges.push({line,lMat,i,j});
+      });
+    });
+    state.edges=edges; state.maxIter=130;
+    onMetrics({'N NEIGHBORS':p.neighbors,'MIN DIST':p.dist.toFixed(2),'CLUSTERS':K,'STATUS':'OPTIMIZING'});
+
+    state.animate=(dt,t)=>{
+      state.timer+=dt*state.speed;
+      if(state.timer>0.04){state.timer=0; state.iter=Math.min(state.iter+1,state.maxIter);}
+      const prog=state.iter/state.maxIter;
+      // UMAP-style: fast early, slower refinement
+      const eased=prog<0.6 ? prog*1.4 : 0.84+0.16*(prog-0.6)/0.4;
+
+      state.pts.forEach((pt,i)=>{
+        pt.cur.lerp(pt.target, prog>0.5?eased*0.09:eased*0.04);
+        state.meshes[i].position.copy(pt.cur);
+        state.meshes[i].material.opacity=0.45+prog*0.45;
+      });
+
+      state.edges.forEach(e=>{
+        const pos=e.line.geometry.attributes.position;
+        pos.setXYZ(0,state.pts[e.i].cur.x,state.pts[e.i].cur.y,state.pts[e.i].cur.z);
+        pos.setXYZ(1,state.pts[e.j].cur.x,state.pts[e.j].cur.y,state.pts[e.j].cur.z);
+        pos.needsUpdate=true;
+        e.lMat.opacity=prog>0.55?(prog-0.55)*0.6:0;
+      });
+
+      if(state.iter%10===0) onMetrics({'N NEIGHBORS':p.neighbors,'MIN DIST':p.dist.toFixed(2),'CLUSTERS':K,'ITER':state.iter});
+      if(state.iter>=state.maxIter) onMetrics({'N NEIGHBORS':p.neighbors,'MIN DIST':p.dist.toFixed(2),'CLUSTERS':K,'STATUS':'CONVERGED'});
+    };
+  }
+
+  build(params);
+  return {
+    animate:(dt,t)=>state.animate&&state.animate(dt,t),
+    onParam:()=>{}, dispose:()=>clearGroup(group)
+  };
+}
 </script>
 <script>
 /* ── GALLERY ENGINE (main.js inlined) ── */
@@ -2824,7 +3652,7 @@ const CATALOG = [
         difficulty: 'intermediate',
         desc: 'Models data as a mix of Gaussian distributions. Unlike K-Means, each point gets a probability of belonging to every cluster.',
         info: 'Gaussian Mixture Models use the Expectation-Maximization algorithm to fit ellipsoidal cluster shapes. Each point carries a soft membership probability, making GMMs more flexible than K-Means.',
-        color: '#00ff9d', ready: false,
+        color: '#00ff9d', ready: true,
         legend: [{c:'#00f0ff',l:'Component 1'},{c:'#ff00cc',l:'Component 2'},{c:'#ffcc44',l:'Component 3'}],
         params: [
           {key:'k',label:'Components',min:2,max:6,step:1,def:3},
@@ -2838,7 +3666,7 @@ const CATALOG = [
         difficulty: 'intermediate',
         desc: 'Builds a tree of clusters by successively merging the two closest clusters. No need to pre-specify K — cut the dendrogram anywhere.',
         info: 'Agglomerative clustering starts with every point as its own cluster and merges greedily. The linkage criterion (single, complete, Ward) determines what "closest" means at each merge step.',
-        color: '#ff6b4a', ready: false,
+        color: '#ff6b4a', ready: true,
         legend: [{c:'#00f0ff',l:'Cluster A'},{c:'#ff00cc',l:'Cluster B'},{c:'#ffcc44',l:'Merge Link'}],
         params: [
           {key:'n',label:'Num Clusters',min:2,max:7,step:1,def:3},
@@ -2927,7 +3755,7 @@ const CATALOG = [
         difficulty: 'beginner',
         desc: 'Classifies a point by majority vote of its K closest training examples. Simple, non-parametric, and surprisingly powerful.',
         info: 'KNN stores all training points and classifies by majority vote of K nearest neighbours. Smaller K = more complex boundary; larger K = smoother. Distance metric choice dramatically affects results.',
-        color: '#ff00cc', ready: false,
+        color: '#ff00cc', ready: true,
         legend: [{c:'#00f0ff',l:'Class A'},{c:'#ff00cc',l:'Class B'},{c:'#ffcc44',l:'Query Point'},{c:'rgba(255,255,255,0.3)',l:'K Radius'}],
         params: [
           {key:'k',    label:'K Neighbors',  min:1, max:15, step:1, def:5},
@@ -2941,7 +3769,7 @@ const CATALOG = [
         difficulty: 'beginner',
         desc: 'Maps linear combinations of features to probabilities via the sigmoid function. The cornerstone of binary classification.',
         info: 'Logistic regression models the log-odds of the positive class as a linear function of features. The sigmoid output gives calibrated probabilities, and the decision boundary is linear in feature space.',
-        color: '#ffcc44', ready: false,
+        color: '#ffcc44', ready: true,
         legend: [{c:'#00f0ff',l:'Class 0'},{c:'#ff00cc',l:'Class 1'},{c:'rgba(255,204,68,0.4)',l:'Decision Boundary'}],
         params: [
           {key:'C',    label:'Regularization C', min:0.1, max:10, step:0.1, def:1},
@@ -3030,7 +3858,7 @@ const CATALOG = [
         difficulty: 'intermediate',
         desc: 'Learns spatial feature hierarchies through convolutional filters. Each layer detects increasingly abstract patterns.',
         info: 'CNNs apply learned filters across spatial dimensions, producing feature maps that detect edges, textures, then high-level objects. Parameter sharing makes them vastly more efficient than dense networks for image data.',
-        color: '#7b2fff', ready: false,
+        color: '#7b2fff', ready: true,
         legend: [{c:'#00f0ff',l:'Input'},{c:'#7b2fff',l:'Feature Map'},{c:'#ff00cc',l:'Pooled Map'},{c:'#ffcc44',l:'Output'}],
         params: [
           {key:'filters',label:'Filters',    min:4, max:32, step:4, def:8},
@@ -3044,7 +3872,7 @@ const CATALOG = [
         difficulty: 'intermediate',
         desc: 'Learns to compress data to a low-dimensional latent space and reconstruct it. Forces the network to learn the most salient features.',
         info: 'An autoencoder is trained to reconstruct its input through a bottleneck. The compressed latent space captures the essential structure of the data, enabling denoising, anomaly detection, and generative modelling.',
-        color: '#00ff9d', ready: false,
+        color: '#00ff9d', ready: true,
         legend: [{c:'#00f0ff',l:'Input'},{c:'#ffcc44',l:'Latent Space'},{c:'#00ff9d',l:'Reconstruction'}],
         params: [
           {key:'latent',label:'Latent Dim', min:2,  max:32, step:2,   def:8},
@@ -3098,7 +3926,7 @@ const CATALOG = [
         difficulty: 'advanced',
         desc: 'Faster than t-SNE with better global structure preservation. Based on Riemannian geometry and topological data analysis.',
         info: 'UMAP constructs a fuzzy topological representation of the high-dimensional data then optimizes a low-dimensional layout to match it. Preserves both local and global structure better than t-SNE.',
-        color: '#ff00cc', ready: false,
+        color: '#ff00cc', ready: true,
         legend: [{c:'#00f0ff',l:'Cluster A'},{c:'#ff00cc',l:'Cluster B'},{c:'#00ff9d',l:'Cluster C'}],
         params: [
           {key:'neighbors',label:'N Neighbors',   min:2,  max:50, step:1, def:15},
